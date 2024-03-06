@@ -1,4 +1,72 @@
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix platform: <https://purl.archive.org/purl/git2rdflab-test/git2RDFLab-platform#> .
 
+
+# Issue/Ticket Base Class
+:GithubIssue a rdfs:Class ;
+    rdfs:subClassOf platform:Ticket ;
+    rdfs:label "Issue" ;
+    rdfs:comment "Represents a Issue or Ticket." .
+
+# Properties
+:hasIssueId a rdf:Property ;
+    rdfs:label "hasIssueId" ;
+    rdfs:domain :GithubIssue ;
+    rdfs:range xsd:long .
+
+:hasState a rdf:Property ;
+    rdfs:label "hasState" ;
+    rdfs:domain :GithubIssue ;
+    rdfs:range :IssueState .
+
+:hasUser a rdf:Property ;
+    rdfs:label "hasUser" ;
+    rdfs:domain :GithubIssue ;
+    rdfs:range xsd:string .
+
+:hasLabel a rdf:Property ;
+    rdfs:label "hasLabel" ;
+    rdfs:domain :GithubIssue ;
+    rdfs:range xsd:string .
+
+:hasAssignee a rdf:Property ;
+    rdfs:label "hasAssignee" ;
+    rdfs:domain :GithubIssue ;
+    rdfs:range xsd:string .
+
+:hasMilestone a rdf:Property ;
+    rdfs:label "hasMilestone" ;
+    rdfs:domain :GithubIssue ;
+    rdfs:range xsd:string .
+
+:hasCreatedAt a rdf:Property ;
+    rdfs:label "hasCreatedAt" ;
+    rdfs:domain :GithubIssue ;
+    rdfs:range xsd:dateTime .
+
+:hasUpdatedAt a rdf:Property ;
+    rdfs:label "hasUpdatedAt" ;
+    rdfs:domain :GithubIssue ;
+    rdfs:range xsd:dateTime .
+
+:hasClosedAt a rdf:Property ;
+    rdfs:label "hasClosedAt" ;
+    rdfs:domain :GithubIssue ;
+    rdfs:range xsd:dateTime .
+
+### Enumerations ###
+
+# IssueState
+:IssueState a rdfs:Class ;
+    rdfs:label "Issue State" .
+
+:OPEN a :IssueState ;
+    rdfs:label "Open" .
+
+:CLOSED a :IssueState ;
+    rdfs:label "Closed" .
+
+:ALL a :IssueState ;
+    rdfs:label "All" .
