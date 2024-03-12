@@ -1,7 +1,7 @@
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
-
+@prefix spdx: <http://spdx.org/rdf/terms> .
 
 #
 # ╭──────────────────────────────────────────────────╮
@@ -13,6 +13,12 @@
     rdfs:comment "Represents a Git-Commit."@en .
 
 # GitCommit properties
+
+:commitHash a rdf:Property ;
+    rdfs:label "CommitHash"@en ;
+    rdfs:comment "The SHA-1 checksum of this commit."@en ;
+    rdfs:domain :GitCommit ;
+    rdfs:range spdx:CheckSum .
 
 :authorName a rdf:Property ;
     rdfs:label "AuthorName"@en ;
