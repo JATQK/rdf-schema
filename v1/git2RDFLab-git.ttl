@@ -1,0 +1,199 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+
+#
+# ╭──────────────────────────────────────────────────╮
+# │ Class: GitCommit                                 │
+# ╰──────────────────────────────────────────────────╯
+#
+:GitCommit a rdfs:Class ;
+    rdfs:label "Git Commit"@en ;
+    rdfs:comment "Represents a Git-Commit."@en .
+
+# GitCommit properties
+
+:authorName a rdf:Property ;
+    rdfs:label "AuthorName"@en ;
+    rdfs:comment "The name of the author for this commit (git config user.name)."@en ;
+    rdfs:domain :GitCommit ;
+    rdfs:range xsd:string .
+
+:authorEmail a rdf:Property ;
+    rdfs:label "AuthorEmail"@en ;
+    rdfs:comment "The email of the author for this commit (git config user.email)."@en ;
+    rdfs:domain :GitCommit ;
+    rdfs:range xsd:string .
+
+:authorDate a rdf:Property ;
+    rdfs:label "AuthorDate"@en ;
+    rdfs:comment "A timestamp of the commit from the author."@en ;
+    rdfs:domain :GitCommit ;
+    rdfs:range xsd:dateTime .
+
+:commitDate a rdf:Property ;
+    rdfs:label "CommitDate"@en ;
+    rdfs:comment "A timestamp of the commit from the committer."@en ;
+    rdfs:domain :GitCommit ;
+    rdfs:range xsd:dateTime .
+
+:committerName a rdf:Property ;
+    rdfs:label "CommitterName"@en ;
+    rdfs:comment "The name of the committer (git config user.name)."@en ;
+    rdfs:domain :GitCommit ;
+    rdfs:range xsd:string .
+
+:committerEmail a rdf:Property ;
+    rdfs:label "CommitterEmail"@en ;
+    rdfs:comment "The email of the committer (git config user.email)"@en ;
+    rdfs:domain :GitCommit ;
+    rdfs:range xsd:string .
+
+:commitMessage a rdf:Property ;
+    rdfs:label "CommitMessage"@en ;
+    rdfs:comment "The commit-message for this commit."@en ;
+    rdfs:domain :GitCommit ;
+    rdfs:range xsd:string .
+
+:branchName a rdf:Property ;
+    rdfs:label "BranchName"@en ;
+    rdfs:comment "A name of a branch where this commit is in (includes also merged branches)."@en ;
+    rdfs:domain :GitCommit ;
+    rdfs:range xsd:string .
+
+:diffEntry a rdf:Property ;
+    rdfs:label "DiffEntry"@en ;
+    rdfs:comment "An entry for a diff compared to the parent of the commit."@en ;
+    rdfs:domain :GitCommit ;
+    rdfs:range :CommitDiffEntry .
+
+#
+# ╭──────────────────────────────────────────────────╮
+# │ Class: CommitDiffEntry                           │
+# ╰──────────────────────────────────────────────────╯
+#
+:CommitDiffEntry a rdfs:Class ;
+    rdfs:label "Commit Diff Entry"@en ;
+    rdfs:comment "A diff-entry is usually a single file where one or multiple changes in a commit were applied compared to the parent-commit of the commit. Can also represent added or removed files, depending on the <ChangeType>."@en ;
+    rdfs:domain :GitCommit .
+
+# CommitDiffEntry properties
+
+:changeType a rdf:Property ;
+    rdfs:label "ChangeType"@en ;
+    rdfs:comment "Spezifies the type of the diff-entry. Can be modified files or added/removed files."@en ;
+    rdfs:domain :CommitDiffEntry ;
+    rdfs:range :ChangeType .
+
+:oldFileName a rdf:Property ;
+    rdfs:label "OldFileName"@en ;
+    rdfs:comment "The name of the file (complete relative path) of the parent-commit where changes occur. If the filename has not changed, the original filename is contained in here."@en ;
+    rdfs:domain :CommitDiffEntry ;
+    rdfs:range xsd:string .
+
+:newFileName a rdf:Property ;
+    rdfs:label "NewFileName"@en ;
+    rdfs:comment "The filename (complete relative path) of the new file, in case a file has been renamed or added."@en ;
+    rdfs:domain :CommitDiffEntry ;
+    rdfs:range xsd:string .
+
+:edit a rdf:Property ;
+    rdfs:label "Edit"@en ;
+    rdfs:comment "Represents a section of lines which have added, deleted or modified within a file."@en ;
+    rdfs:domain :CommitDiffEntry ;
+    rdfs:range :CommitDiffEdit .
+
+
+#
+# ╭──────────────────────────────────────────────────╮
+# │ Class: CommitDiffEdit                            │
+# ╰──────────────────────────────────────────────────╯
+#
+:CommitDiffEdit a rdfs:Class ;
+    rdfs:label "Commit Diff Entry Edit"@en ;
+    rdfs:comment "A section of lines which have been added, deleted or modified within a file."@en .
+
+# CommitDiffEdit properties
+
+:editType a rdf:Property ;
+    rdfs:label "EditType"@en ;
+    rdfs:comment "The kind of edit that has taken place (insert/delete/replace), see <EditType>."@en ;
+    rdfs:domain :CommitDiffEdit ;
+    rdfs:range :EditType .
+
+:oldLinenumberBegin a rdf:Property ;
+    rdfs:label "OldLinenumberBegin"@en ;
+    rdfs:comment "The line number beginning from 0 in the diff of the parent commit where a section has been edited."@en ;
+    rdfs:domain :CommitDiffEdit ;
+    rdfs:range xsd:integer .
+
+:newLinenumberBegin a rdf:Property ;
+    rdfs:label "NewLinenumberBegin"@en ;
+    rdfs:comment "The line number beginning from 0 in the diff of the current commit where a section has been edited."@en ;
+    rdfs:domain :CommitDiffEdit ;
+    rdfs:range xsd:integer .
+
+:oldLinenumberEnd a rdf:Property ;
+    rdfs:label "OldLinenumberEnd"@en ;
+    rdfs:comment "The line number ending in the diff of the parent commit where a section has been edited."@en ;
+    rdfs:domain :CommitDiffEdit ;
+    rdfs:range xsd:integer .
+
+:newLinenumberEnd a rdf:Property ;
+    rdfs:label "NewLinenumberEnd"@en ;
+    rdfs:comment "The line number ending in the diff of the current commit where a section has been edited."@en ;
+    rdfs:domain :CommitDiffEdit ;
+    rdfs:range xsd:integer .
+
+#
+# ╭──────────────────────────────────────────────────╮
+# │ Enumeration: ChangeType                          │
+# ╰──────────────────────────────────────────────────╯
+#
+:ChangeType a rdfs:Class ;
+    rdfs:label "Change Type"@en ;
+    rdfs:comment "Specifies the changes of a DiffEntry (usually for a file) that have been modified."@en .
+
+:add a :ChangeType ;
+    rdfs:label "Add"@en ;
+    rdfs:comment "A file has been added."@en .
+
+:delete a :ChangeType ;
+    rdfs:label "Delete"@en ;
+    rdfs:comment "A file has been deleted."@en .
+
+:modify a :ChangeType ;
+    rdfs:label "Modify"@en ;
+    rdfs:comment "A file has been modified."@en .
+
+:rename a :ChangeType ;
+    rdfs:label "Rename"@en ;
+    rdfs:comment "A file has been renamed."@en .
+
+:copy a :ChangeType ;
+    rdfs:label "Copy"@en ;
+    rdfs:comment "A file has been copied."@en .
+
+#
+# ╭──────────────────────────────────────────────────╮
+# │ Enumeration: EditType                            │
+# ╰──────────────────────────────────────────────────╯
+#
+:EditType a rdfs:Class ;
+    rdfs:label "Edit Type"@en ;
+    rdfs:comment "Specifies the kind of edit within a DiffEntry/file for a section of text-lines."@en .
+
+:insert a :EditType ;
+    rdfs:label "Insert"@en ;
+    rdfs:comment "Content has been added/inserted into a file."@en .
+
+:del a :EditType ;
+    rdfs:label "Delete"@en ;
+    rdfs:comment "Content has been removed/deleted from a file."@en .
+
+:replace a :EditType ;
+    rdfs:label "Replace"@en ;
+    rdfs:comment "Content has been replaced within a file."@en .
+
+

@@ -1,0 +1,93 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+# @prefix platform: <https://purl.archive.org/purl/git2rdflab-test/v1/git2RDFLab-platform.ttl#> .
+@prefix platform: <https://raw.githubusercontent.com/git2RDFLab/rdf-schema/main/git2RDFLab-platform-github#> .
+
+
+#
+# ╭──────────────────────────────────────────────────╮
+# │ Class: GithubIssue                               │
+# ╰──────────────────────────────────────────────────╯
+#
+:GithubIssue a rdfs:Class ;
+    rdfs:subClassOf platform:Ticket ;
+    rdfs:label "Issue"@en ;
+    rdfs:comment "Represents a GitHub-Issue."@en .
+
+# GithubIssue Properties
+:issueId a rdf:Property ;
+    rdfs:label "IssueId"@en ;
+    rdfs:comment "The GitHub-Issue-ID."@en ;
+    rdfs:domain :GithubIssue ;
+    rdfs:range xsd:long .
+
+:state a rdf:Property ;
+    rdfs:label "State"@en ;
+    rdfs:comment "The state of the GitHub-Issue (Open/Closed) - See <IssueState>."@en ;
+    rdfs:domain :GithubIssue ;
+    rdfs:range :IssueState .
+
+:user a rdf:Property ;
+    rdfs:label "User"@en ;
+    rdfs:comment "The GitHub-Handle of the user that opened the issue."@en ;
+    rdfs:domain :GithubIssue ;
+    rdfs:range xsd:string .
+
+:label a rdf:Property ;
+    rdfs:label "Label"@en ;
+    rdfs:comment "A GitHub-Label that is assigned to this issue."@en ;
+    rdfs:domain :GithubIssue ;
+    rdfs:range xsd:string .
+
+:assignee a rdf:Property ;
+    rdfs:label "Assignee"@en ;
+    rdfs:comment "A GitHub-Handle of a user that is assigned to this issue."@en ;
+    rdfs:domain :GithubIssue ;
+    rdfs:range xsd:string .
+
+:milestone a rdf:Property ;
+    rdfs:label "Milestone"@en ;
+    rdfs:comment "A GitHub-Milestone that is assigned to this issue."@en ;
+    rdfs:domain :GithubIssue ;
+    rdfs:range xsd:string .
+
+:createdAt a rdf:Property ;
+    rdfs:label "CreatedAt"@en ;
+    rdfs:comment "The date and time when this issue was created."@en ;
+    rdfs:domain :GithubIssue ;
+    rdfs:range xsd:dateTime .
+
+:updatedAt a rdf:Property ;
+    rdfs:label "UpdatedAt"@en ;
+    rdfs:comment "The date and time when this issue was last updated or modified."@en ;
+    rdfs:domain :GithubIssue ;
+    rdfs:range xsd:dateTime .
+
+:closedAt a rdf:Property ;
+    rdfs:label "ClosedAt"@en ;
+    rdfs:comment "The date and time when this issue has been closed."@en ;
+    rdfs:domain :GithubIssue ;
+    rdfs:range xsd:dateTime .
+
+#
+# ╭──────────────────────────────────────────────────╮
+# │ Enumeration: IssueState                          │
+# ╰──────────────────────────────────────────────────╯
+#
+:IssueState a rdfs:Class ;
+    rdfs:label "Issue State"@en ;
+    rdfs:comment "State of a GitHub-Issue."@en .
+
+:open a :IssueState ;
+    rdfs:label "Open"@en ;
+    rdfs:comment "The GitHub-Issue is open."@en .
+
+:closed a :IssueState ;
+    rdfs:label "Closed"@en ;
+    rdfs:comment "The GitHub-Issue is closed."@en .
+
+:all a :IssueState ;
+    rdfs:label "All"@en ;
+    rdfs:comment "Contains open and closed GitHub-Issues."@en .
