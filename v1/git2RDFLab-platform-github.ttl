@@ -19,7 +19,13 @@
 # GithubIssue Properties
 :issueId a rdf:Property ;
     rdfs:label "IssueId"@en ;
-    rdfs:comment "The GitHub-Issue-ID."@en ;
+    rdfs:comment "The (internal) GitHub-Issue-ID."@en ;
+    rdfs:domain :GithubIssue ;
+    rdfs:range xsd:long .
+
+:issueNumber a rdf:Property ;
+    rdfs:label "IssueNumber"@en ;
+    rdfs:comment "The GitHub-Issue-Number (also used in GH-shortcuts like #123 and the URL)."@en ;
     rdfs:domain :GithubIssue ;
     rdfs:range xsd:long .
 
