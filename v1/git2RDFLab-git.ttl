@@ -132,25 +132,25 @@
     rdfs:label "OldLinenumberBegin"@en ;
     rdfs:comment "The line number beginning from 0 in the diff of the parent commit where a section has been edited."@en ;
     rdfs:domain :CommitDiffEdit ;
-    rdfs:range xsd:integer .
+    rdfs:range xsd:nonNegativeInteger .
 
 :newLinenumberBegin a rdf:Property ;
     rdfs:label "NewLinenumberBegin"@en ;
     rdfs:comment "The line number beginning from 0 in the diff of the current commit where a section has been edited."@en ;
     rdfs:domain :CommitDiffEdit ;
-    rdfs:range xsd:integer .
+    rdfs:range xsd:nonNegativeInteger .
 
 :oldLinenumberEnd a rdf:Property ;
     rdfs:label "OldLinenumberEnd"@en ;
     rdfs:comment "The line number ending in the diff of the parent commit where a section has been edited."@en ;
     rdfs:domain :CommitDiffEdit ;
-    rdfs:range xsd:integer .
+    rdfs:range xsd:nonNegativeInteger .
 
 :newLinenumberEnd a rdf:Property ;
     rdfs:label "NewLinenumberEnd"@en ;
     rdfs:comment "The line number ending in the diff of the current commit where a section has been edited."@en ;
     rdfs:domain :CommitDiffEdit ;
-    rdfs:range xsd:integer .
+    rdfs:range xsd:nonNegativeInteger .
 
 #
 # ╭──────────────────────────────────────────────────╮
