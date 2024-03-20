@@ -1,5 +1,13 @@
 # git2RDFLab-Schema
 
+## Direct URLs
+```
+@prefix git: <https://raw.githubusercontent.com/git2RDFLab/rdf-schema/main/v1/git2RDFLab-git.ttl#> .
+@prefix platform: <https://raw.githubusercontent.com/git2RDFLab/rdf-schema/main/v1/git2RDFLab-platform#> .
+@prefix github: <https://raw.githubusercontent.com/git2RDFLab/rdf-schema/main/v1/git2RDFLab-platform-github#> .
+```
+
+## PURLs (not fully implemented yet!)
 ```
 @prefix git: <https://purl.archive.org/purl/git2rdflab-test/v1/git2RDFLab-git#> .
 @prefix platform: <https://purl.archive.org/purl/git2rdflab-test/v1/git2RDFLab-platform#> .
