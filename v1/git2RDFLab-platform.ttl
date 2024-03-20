@@ -13,14 +13,14 @@
 
 # Ticket properties
 
-:title a rdf:Property ;
+:ticketTitle a rdf:Property ;
     rdfs:label "Title"@en ;
     rdfs:comment "The title of the issue or ticket."@en ;
-    rdfs:domain :GithubIssue ;
+    rdfs:domain :Ticket ;
     rdfs:range xsd:string .
 
-:body a rdf:Property ;
+:ticketBody a rdf:Property ;
     rdfs:label "Body"@en ;
     rdfs:comment "The main body message text of the issue or ticket."@en ;
-    rdfs:domain :GithubIssue ;
+    rdfs:domain :Ticket ;
     rdfs:range xsd:string .
