@@ -21,13 +21,13 @@
     rdfs:label "IssueId"@en ;
     rdfs:comment "The (internal) GitHub-Issue-ID."@en ;
     rdfs:domain :Issue ;
-    rdfs:range xsd:long .
+    rdfs:range xsd:nonNegativeInteger .
 
 :issueNumber a rdf:Property ;
     rdfs:label "IssueNumber"@en ;
     rdfs:comment "The GitHub-Issue-Number (also used in GH-shortcuts like #123 and the URL)."@en ;
     rdfs:domain :Issue ;
-    rdfs:range xsd:long .
+    rdfs:range xsd:nonNegativeInteger .
 
 :issueState a rdf:Property ;
     rdfs:label "State"@en ;
