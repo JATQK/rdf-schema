@@ -201,5 +201,3 @@
 :replace a :EditType ;
     rdfs:label "Replace"@en ;
     rdfs:comment "Content has been replaced within a file."@en .
-
-
