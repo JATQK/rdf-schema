@@ -6,6 +6,7 @@
 @prefix platform: <https://raw.githubusercontent.com/git2RDFLab/rdf-schema/main/v1/git2RDFLab-platform-github.ttl#> .
 
 
+
 #
 # ╭──────────────────────────────────────────────────╮
 # │ Class: Issue                                     │
