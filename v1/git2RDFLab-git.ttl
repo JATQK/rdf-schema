@@ -6,7 +6,7 @@
 @prefix dc: <http://purl.org/dc/terms/> .
 @prefix ns0: <http://purl.org/vocab/vann/> .
 @prefix cc: <http://creativecommons.org/ns#> .
-@prefix git: <https://purl.archive.org/purl/git2rdflab-test/v1/git2RDFLab-git#> .
+@prefix git: <https://purl.archive.org/git2rdflab-test/v1/git2RDFLab-git#> .
 
 #
 # ╭──────────────────────────────────────────────────╮
