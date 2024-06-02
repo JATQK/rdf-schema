@@ -2,6 +2,8 @@
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
+@prefix platform: <https://git2rdflab.wik.li/git2RDFLab-platform.ttl#> .
+
 #
 # ╭──────────────────────────────────────────────────╮
 # │ Class: Ticket                                    │
@@ -16,11 +18,11 @@ platform:Ticket a rdfs:Class ;
 platform:ticketTitle a rdf:Property ;
     rdfs:label "Title"@en ;
     rdfs:comment "The title of the issue or ticket."@en ;
-    rdfs:domain :Ticket ;
+    rdfs:domain platform:Ticket ;
     rdfs:range xsd:string .
 
 platform:ticketBody a rdf:Property ;
     rdfs:label "Body"@en ;
     rdfs:comment "The main body message text of the issue or ticket."@en ;
-    rdfs:domain :Ticket ;
+    rdfs:domain platform:Ticket ;
     rdfs:range xsd:string .
