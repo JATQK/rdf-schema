@@ -86,8 +86,14 @@ git:commitMessage a rdf:Property ;
     rdfs:range xsd:string .
 
 git:branchName a rdf:Property ;
-    rdfs:label "BranchName"@en ;
+    rdfs:label "Branch-Name"@en ;
     rdfs:comment "A name of a branch where this commit is in (includes also merged branches)."@en ;
+    rdfs:domain git:GitCommit ;
+    rdfs:range xsd:string .
+
+git:tagName a rdf:Property ;
+    rdfs:label "Tag-Name"@en ;
+    rdfs:comment "The Tag that is attached to this commit (annotated tags only)."@en ;
     rdfs:domain git:GitCommit ;
     rdfs:range xsd:string .
 
