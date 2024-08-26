@@ -56,6 +56,49 @@ git:encoding a rdf:Property ;
     rdfs:domain git:GitRepository ;
     rdfs:range <http://www.iana.org/assignments/character-sets> .
 
+
+#
+# ╭──────────────────────────────────────────────────╮
+# │ Class: GitSubmodule                              │
+# ╰──────────────────────────────────────────────────╯
+#
+
+git:GitSubmodule a rdfs:Class ;
+    rdfs:label "Git Submodule"@en ;
+    rdfs:comment "Represents a Git-Submodule."@en .
+
+# GitSubmodule properties
+
+git:submodulePath a rdf:Property ;
+    rdfs:label "Submodule name"@en ;
+    rdfs:comment "The name of the submodule repository."@en ;
+    rdfs:domain git:GitSubmodule ;
+    rdfs:range xsd:string .
+
+git:submoduleUrl a rdf:Property ;
+    rdfs:label "Submodule name"@en ;
+    rdfs:comment "The url of the submodule repository."@en ;
+    rdfs:domain git:GitSubmodule ;
+    rdfs:range xsd:anyURI .
+
+git:submoduleCommitHash a rdf:Property ;
+    rdfs:label "Submodule name"@en ;
+    rdfs:comment "The SHA-1 checksum of the commit."@en ;
+    rdfs:domain git:GitSubmodule ;
+    rdfs:range spdx:CheckSum .
+
+git:submoduleCommitUri a rdf:Property ;
+    rdfs:label "Submodule name"@en ;
+    rdfs:comment "The URI of the commit to the submodule repository."@en ;
+    rdfs:domain git:GitSubmodule ;
+    rdfs:range xsd:anyURI .
+
+git:submoduleRepositoryUri a rdf:Property ;
+    rdfs:label "Submodule name"@en ;
+    rdfs:comment "The name of the submodule repository."@en ;
+    rdfs:domain git:GitSubmodule ;
+    rdfs:range xsd:anyURI .
+
 #
 # ╭──────────────────────────────────────────────────╮
 # │ Class: GitCommit                                 │
