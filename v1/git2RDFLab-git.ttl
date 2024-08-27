@@ -23,7 +23,6 @@
   owl:versionInfo "Version 0.1 - 2024-03-22"@en ;
   dc:modified "2024-03-22"^^xsd:date ;
   dc:contributor "https://github.com/git2RDFLab"  .
-#   cc:license <https://mit-license.org> .
 
 
 #
@@ -66,6 +65,7 @@ git:encoding a rdf:Property ;
 git:GitSubmodule a rdfs:Class ;
     rdfs:label "Git Submodule"@en ;
     rdfs:comment "Represents a Git-Submodule."@en .
+    rdfs:domain git:GitRepository ;
 
 # GitSubmodule properties
 

@@ -6,6 +6,22 @@
 
 #
 # ╭──────────────────────────────────────────────────╮
+# │ Metadata                                         │
+# ╰──────────────────────────────────────────────────╯
+#
+
+<https://purl.archive.org/git2rdflab/v1/git2RDFLab-platform#>
+  a owl:Ontology ;
+  dc:title "The git2RDFLab platform ontology"@en ;
+  dc:description "The git2RDFLab ontology provides entities found in external git platform providers, mainly issues or userhandles."@en ;
+  ns0:preferredNamespacePrefix "platform" ;
+  ns0:preferredNamespaceUri "https://purl.archive.org/purl/git2rdflab/v1/git2RDFLab-platform#" ;
+  owl:versionInfo "Version 0.1 - 2024-08-27"@en ;
+  dc:modified "2024-08-27"^^xsd:date ;
+  dc:contributor "https://github.com/git2RDFLab"  .
+
+#
+# ╭──────────────────────────────────────────────────╮
 # │ Class: Ticket                                    │
 # ╰──────────────────────────────────────────────────╯
 #
