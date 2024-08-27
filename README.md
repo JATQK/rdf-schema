@@ -7,11 +7,11 @@
 @prefix github: <https://raw.githubusercontent.com/git2RDFLab/rdf-schema/main/v1/git2RDFLab-platform-github.ttl#> .
 ```
 
-## PURLs (not fully implemented yet!)
+## PURLs
 ```
-@prefix git: <https://purl.archive.org/purl/git2rdflab-test/v1/git2RDFLab-git#> .
-@prefix platform: <https://purl.archive.org/purl/git2rdflab-test/v1/git2RDFLab-platform#> .
-@prefix github: <https://purl.archive.org/purl/git2rdflab-test/v1/git2RDFLab-platform-github#> .
+@prefix git: <https://purl.archive.org/purl/git2rdflab/v1/git2RDFLab-git#> .
+@prefix platform: <https://purl.archive.org/purl/git2rdflab/v1/git2RDFLab-platform#> .
+@prefix github: <https://purl.archive.org/purl/git2rdflab/v1/git2RDFLab-platform-github#> .
 ```
 
 | Schema | Description |
