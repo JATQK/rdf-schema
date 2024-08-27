@@ -64,8 +64,9 @@ git:encoding a rdf:Property ;
 
 git:GitSubmodule a rdfs:Class ;
     rdfs:label "Git Submodule"@en ;
-    rdfs:comment "Represents a Git-Submodule."@en .
     rdfs:domain git:GitRepository ;
+    rdfs:comment "Represents a Git-Submodule."@en .
+
 
 # GitSubmodule properties
 
@@ -107,8 +108,9 @@ git:submoduleRepositoryUri a rdf:Property ;
 
 git:GitCommit a rdfs:Class ;
     rdfs:label "Git Commit"@en ;
-    rdfs:comment "Represents a Git-Commit."@en .
     rdfs:domain git:GitRepository ;
+    rdfs:comment "Represents a Git-Commit."@en .
+
 
 # GitCommit properties
 
