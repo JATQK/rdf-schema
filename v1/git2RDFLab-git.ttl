@@ -108,6 +108,7 @@ git:submoduleRepositoryUri a rdf:Property ;
 git:GitCommit a rdfs:Class ;
     rdfs:label "Git Commit"@en ;
     rdfs:comment "Represents a Git-Commit."@en .
+    rdfs:domain git:GitRepository ;
 
 # GitCommit properties
 
