@@ -6,6 +6,32 @@
 @prefix platform: <https://purl.archive.org/git2rdflab/v1/git2RDFLab-platform-github#> .
 @prefix github: <https://purl.archive.org/git2rdflab/v1/git2RDFLab-platform-github#> .
 
+
+#
+# ╭──────────────────────────────────────────────────╮
+# │ Class: GitRepository                             │
+# ╰──────────────────────────────────────────────────╯
+#
+
+github:GitRepository a rdfs:Class ;
+    rdfs:subClassOf git:GitRepository ;
+    rdfs:label "GitHub Git Repository"@en ;
+    rdfs:comment "Represents a Git-Repository hosted on GitHub."@en .
+
+# GitRepository properties
+
+github:name a rdf:Property ;
+    rdfs:label "Repository name"@en ;
+    rdfs:comment "The name of this repository in GitHub."@en ;
+    rdfs:domain github:GitRepository ;
+    rdfs:range xsd:string .
+
+github:owner a rdf:Property ;
+    rdfs:label "Repository owner name"@en ;
+    rdfs:comment "The owner name of this repository."@en ;
+    rdfs:domain github:GitRepository ;
+    rdfs:range xsd:string .
+
 #
 # ╭──────────────────────────────────────────────────╮
 # │ Class: GitCommit                                 │
@@ -56,25 +82,25 @@ github:issueUser a rdf:Property ;
     rdfs:label "User"@en ;
     rdfs:comment "The GitHub-Handle of the user that opened the issue."@en ;
     rdfs:domain github:Issue ;
-    rdfs:range xsd:string .
+    rdfs:range  xsd:anyURI .
 
 github:issueLabel a rdf:Property ;
     rdfs:label "Label"@en ;
-    rdfs:comment "A GitHub-Label that is assigned to this issue."@en ;
+    rdfs:comment "A URI to a GitHub-Label that is assigned to this issue (JSON)."@en ;
     rdfs:domain github:Issue ;
-    rdfs:range xsd:string .
+    rdfs:range xsd:anyURI .
 
 github:issueAssignee a rdf:Property ;
     rdfs:label "Assignee"@en ;
     rdfs:comment "A GitHub-Handle of a user that is assigned to this issue."@en ;
     rdfs:domain github:Issue ;
-    rdfs:range xsd:string .
+    rdfs:range  xsd:anyURI .
 
 github:issueMilestone a rdf:Property ;
     rdfs:label "Milestone"@en ;
     rdfs:comment "A GitHub-Milestone that is assigned to this issue."@en ;
     rdfs:domain github:Issue ;
-    rdfs:range xsd:string .
+    rdfs:range xsd:anyURI .
 
 github:issueCreatedAt a rdf:Property ;
     rdfs:label "CreatedAt"@en ;

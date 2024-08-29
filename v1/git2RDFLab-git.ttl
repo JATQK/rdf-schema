@@ -37,23 +37,11 @@ git:GitRepository a rdfs:Class ;
 
 # GitRepository properties
 
-git:name a rdf:Property ;
-    rdfs:label "Repository name"@en ;
-    rdfs:comment "The name of this repository."@en ;
-    rdfs:domain git:GitRepository ;
-    rdfs:range xsd:string .
-
-git:owner a rdf:Property ;
-    rdfs:label "Repository owner name"@en ;
-    rdfs:comment "The owner name of this repository."@en ;
-    rdfs:domain git:GitRepository ;
-    rdfs:range xsd:string .
-
 git:encoding a rdf:Property ;
     rdfs:label "File encoding"@en ;
     rdfs:comment "The file encoding in this repository (default UTF-8)."@en ;
     rdfs:domain git:GitRepository ;
-    rdfs:range <http://www.iana.org/assignments/character-sets> .
+    rdfs:range xsd:string .
 
 
 #
