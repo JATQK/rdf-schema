@@ -37,7 +37,7 @@ git:GitRepository a rdfs:Class ;
 
 # GitRepository properties
 
-git:encoding a rdf:Property ;
+git:repositoryEncoding a rdf:Property ;
     rdfs:label "File encoding"@en ;
     rdfs:comment "The file encoding in this repository (default UTF-8)."@en ;
     rdfs:domain git:GitRepository ;
@@ -63,12 +63,6 @@ git:submodulePath a rdf:Property ;
     rdfs:comment "The name of the submodule repository."@en ;
     rdfs:domain git:GitSubmodule ;
     rdfs:range xsd:string .
-
-git:submoduleUrl a rdf:Property ;
-    rdfs:label "Submodule name"@en ;
-    rdfs:comment "The url of the submodule repository."@en ;
-    rdfs:domain git:GitSubmodule ;
-    rdfs:range xsd:anyURI .
 
 git:submoduleCommitHash a rdf:Property ;
     rdfs:label "Submodule name"@en ;

@@ -20,17 +20,17 @@ github:GitRepository a rdfs:Class ;
 
 # GitRepository properties
 
-github:name a rdf:Property ;
+github:repositoryName a rdf:Property ;
     rdfs:label "Repository name"@en ;
     rdfs:comment "The name of this repository in GitHub."@en ;
     rdfs:domain github:GitRepository ;
     rdfs:range xsd:string .
 
-github:owner a rdf:Property ;
+github:repositoryOwner a rdf:Property ;
     rdfs:label "Repository owner name"@en ;
     rdfs:comment "The owner name of this repository."@en ;
     rdfs:domain github:GitRepository ;
-    rdfs:range xsd:string .
+    rdfs:range xsd:anyURI .
 
 #
 # ╭──────────────────────────────────────────────────╮
