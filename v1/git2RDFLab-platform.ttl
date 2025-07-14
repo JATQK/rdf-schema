@@ -2,7 +2,7 @@
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
-@prefix platform: <https://purl.archive.org/git2rdflab/v1/git2RDFLab-platform#> .
+@prefix platform: <https://purl.archive.org/git2rdf/v1/git2RDFLab-platform#> .
 @prefix dc: <http://purl.org/dc/terms/> .
 @prefix ns0: <http://purl.org/vocab/vann/> .
 
@@ -12,7 +12,7 @@
 # ╰──────────────────────────────────────────────────╯
 #
 
-<https://purl.archive.org/git2rdflab/v1/git2RDFLab-platform#>
+<https://purl.archive.org/git2rdf/v1/git2RDFLab-platform#>
   a owl:Ontology ;
   dc:title "The git2RDFLab platform ontology"@en ;
   dc:description "The git2RDFLab ontology provides entities found in external git platform providers, mainly issues or userhandles."@en ;

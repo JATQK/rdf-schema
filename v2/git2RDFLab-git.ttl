@@ -5,7 +5,7 @@
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix dc: <http://purl.org/dc/terms/> .
 @prefix ns0: <http://purl.org/vocab/vann/> .
-@prefix git: <https://purl.archive.org/git2rdflab/v2/git2RDFLab-git#> .
+@prefix git: <https://purl.archive.org/git2rdf/v2/git2RDFLab-git#> .
 
 #
 # ╭──────────────────────────────────────────────────╮
@@ -13,16 +13,16 @@
 # ╰──────────────────────────────────────────────────╯
 #
 
-<https://purl.archive.org/git2rdflab/v2/git2RDFLab-git#>
+<https://purl.archive.org/git2rdf/v2/git2RDFLab-git#>
   a owl:Ontology ;
   dc:title "The git2RDFLab Git Ontology v2"@en ;
   dc:description "The git2RDFLab ontology v2 provides entities found in a git repository, mainly commits, with improved relationships and structure linked to github issues"@en ;
   ns0:preferredNamespacePrefix "git" ;
-  ns0:preferredNamespaceUri "https://purl.archive.org/git2rdflab/v2/git2RDFLab-git#" ;
+  ns0:preferredNamespaceUri "https://purl.archive.org/git2rdf/v2/git2RDFLab-git#" ;
   owl:versionInfo "Version 2.0 - 2025-07-10"@en ;
   dc:modified "2025-07-10"^^xsd:date ;
   dc:contributor "https://github.com/git2RDFLab" ;
-  owl:priorVersion <https://purl.archive.org/git2rdflab/v1/git2RDFLab-git#> .
+  owl:priorVersion <https://purl.archive.org/git2rdf/v1/git2RDFLab-git#> .
 
 #
 # ╭──────────────────────────────────────────────────╮
@@ -448,3 +448,19 @@ git:oldLinenumberBegin owl:equivalentProperty git:oldLineStart .
 git:newLinenumberBegin owl:equivalentProperty git:newLineStart .
 git:oldLinenumberEnd owl:equivalentProperty git:oldLineEnd .
 git:newLinenumberEnd owl:equivalentProperty git:newLineEnd .
+
+
+#
+# ╭──────────────────────────────────────────────────╮
+# │ Linking Properties                               │
+# ╰──────────────────────────────────────────────────╯
+#
+
+@prefix rating: <https://purl.archive.org/git2rdf/v2/git2RDFLab-rating#> .
+
+git:hasRating a rdf:Property ;
+    rdfs:label "Has Rating"@en ;
+    rdfs:comment "Links a git entity (like a Commit or Repository) to a rating about it."@en ;
+    rdfs:range rating:Rating ;
+    # This formally connects the git schema to the rating schema.
+    owl:inverseOf rating:ratedEntity .
