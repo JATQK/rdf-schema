@@ -6,7 +6,7 @@
 @prefix dc: <http://purl.org/dc/terms/> .
 @prefix ns0: <http://purl.org/vocab/vann/> .
 @prefix cc: <http://creativecommons.org/ns#> .
-@prefix git: <https://purl.archive.org/git2rdflab/v1/git2RDFLab-git#> .
+@prefix git: <https://purl.archive.org/git2rdf/v1/git2RDFLab-git#> .
 
 #
 # ╭──────────────────────────────────────────────────╮
@@ -14,7 +14,7 @@
 # ╰──────────────────────────────────────────────────╯
 #
 
-<https://purl.archive.org/git2rdflab/v1/git2RDFLab-git#>
+<https://purl.archive.org/git2rdf/v1/git2RDFLab-git#>
   a owl:Ontology ;
   dc:title "The git2RDFLab ontology"@en ;
   dc:description "The git2RDFLab ontology provides entities found in the a git repository, mainly commits"@en ;

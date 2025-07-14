@@ -1,0 +1,134 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix dc: <http://purl.org/dc/terms/> .
+@prefix rating: <https://purl.archive.org/git2rdf/v2/git2RDFLab-rating#> .
+
+#
+# ╭──────────────────────────────────────────────────╮
+# │ Metadata                                         │
+# ╰──────────────────────────────────────────────────╯
+#
+
+<https://purl.archive.org/git2rdf/v2/git2RDFLab-rating#>
+    a               owl:Ontology ;
+    dc:title        "The git2RDFLab Rating Ontology"@en ;
+    dc:description  "A structured schema for capturing ratings, raters, and evaluation context."@en ;
+    ns0:preferredNamespacePrefix "rating" ;
+    ns0:preferredNamespaceUri    "https://purl.archive.org/git2rdf/v2/git2RDFLab-rating#" ;
+    owl:versionInfo  "Version 1.0 - 2025-07-14"@en ;
+    dc:modified      "2025-07-14"^^xsd:date ;
+    dc:contributor   "https://github.com/git2RDFLab" .
+
+#
+# ╭──────────────────────────────────────────────────╮
+# │ Classes                                          │
+# ╰──────────────────────────────────────────────────╯
+#
+
+rating:EvaluationRun a rdfs:Class ;
+    rdfs:label "Evaluation Run"@en ;
+    rdfs:comment "A specific batch or session of evaluations, grouping multiple ratings."@en .
+
+rating:Rating a rdfs:Class ;
+    rdfs:label "Rating"@en ;
+    rdfs:comment "A single rating event, performed by a Rater as part of an EvaluationRun."@en .
+
+rating:Rater a rdfs:Class ;
+    rdfs:label "Rater"@en ;
+    rdfs:comment "An agent that performs a rating. Superclass for Expert and LLMAgent."@en .
+
+rating:Expert a rdfs:Class ;
+    rdfs:subClassOf rating:Rater ;
+    rdfs:label "Expert"@en .
+
+rating:LLMAgent a rdfs:Class ;
+    rdfs:subClassOf rating:Rater ;
+    rdfs:label "LLM Agent"@en .
+
+rating:Metric a rdfs:Class ;
+    rdfs:label "Metric"@en ;
+    rdfs:comment "Defines a specific criterion used for a rating."@en .
+
+#
+# ╭──────────────────────────────────────────────────╮
+# │ Properties                                       │
+# ╰──────────────────────────────────────────────────╯
+#
+
+# -- Linking Properties --
+
+rating:hasRating a rdf:Property ;
+    rdfs:label "Has Rating"@en ;
+    rdfs:domain rating:EvaluationRun ;
+    rdfs:range rating:Rating .
+
+rating:performedBy a rdf:Property ;
+    rdfs:label "Performed By"@en ;
+    rdfs:domain rating:Rating ;
+    rdfs:range rating:Rater .
+
+rating:ratedEntity a rdf:Property ;
+    rdfs:label "Rated Entity"@en ;
+    rdfs:domain rating:Rating ;
+    rdfs:range rdfs:Resource .
+
+# -- EvaluationRun Properties --
+
+rating:runVersion a rdf:Property ;
+    rdfs:label "Run Version"@en ;
+    rdfs:domain rating:EvaluationRun ;
+    rdfs:range xsd:string .
+
+rating:runDate a rdf:Property ;
+    rdfs:label "Run Date"@en ;
+    rdfs:domain rating:EvaluationRun ;
+    rdfs:range xsd:date .
+
+# -- Rating Properties --
+
+rating:score a rdf:Property ;
+    rdfs:label "Score"@en ;
+    rdfs:domain rating:Rating ;
+    rdfs:range xsd:decimal .
+
+rating:feedback a rdf:Property ;
+    rdfs:label "Feedback"@en ;
+    rdfs:domain rating:Rating ;
+    rdfs:range xsd:string .
+
+rating:usesMetric a rdf:Property ;
+    rdfs:label "Uses Metric"@en ;
+    rdfs:domain rating:Rating ;
+    rdfs:range rating:Metric .
+
+# -- Rater Properties --
+
+rating:expertName a rdf:Property ;
+    rdfs:domain rating:Expert ;
+    rdfs:range xsd:string .
+
+rating:expertRole a rdf:Property ;
+    rdfs:domain rating:Expert ;
+    rdfs:range xsd:string .
+
+rating:modelName a rdf:Property ;
+    rdfs:domain rating:LLMAgent ;
+    rdfs:range xsd:string .
+
+rating:temperature a rdf:Property ;
+    rdfs:domain rating:LLMAgent ;
+    rdfs:range xsd:decimal .
+
+# -- Metric Properties --
+
+rating:metricId a rdf:Property ;
+    rdfs:domain rating:Metric ;
+    rdfs:range xsd:string .
+
+rating:instructionalPrompt a rdf:Property ;
+    rdfs:label "Instructional Prompt"@en ;
+    rdfs:comment "A machine-readable version of the instructions for applying the metric."@en ;
+    rdfs:domain rating:Metric ;
+    rdfs:range xsd:string .

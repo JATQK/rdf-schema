@@ -4,7 +4,8 @@
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix dc: <http://purl.org/dc/terms/> .
 @prefix ns0: <http://purl.org/vocab/vann/> .
-@prefix platform: <https://purl.archive.org/git2rdflab/v2/git2RDFLab-platform#> .
+@prefix platform: <https://purl.archive.org/git2rdf/v2/git2RDFLab-platform#> .
+
 
 #
 # ╭──────────────────────────────────────────────────╮
@@ -12,16 +13,16 @@
 # ╰──────────────────────────────────────────────────╯
 #
 
-<https://purl.archive.org/git2rdflab/v2/git2RDFLab-platform#>
+<https://purl.archive.org/git2rdf/v2/git2RDFLab-platform#>
   a owl:Ontology ;
   dc:title "The git2RDFLab Platform Ontology v2"@en ;
   dc:description "The git2RDFLab platform ontology v2 provides entities found in external git platform providers, including issues, users, comments, and workflows"@en ;
   ns0:preferredNamespacePrefix "platform" ;
-  ns0:preferredNamespaceUri "https://purl.archive.org/git2rdflab/v2/git2RDFLab-platform#" ;
+  ns0:preferredNamespaceUri "https://purl.archive.org/git2rdf/v2/git2RDFLab-platform#" ;
   owl:versionInfo "Version 2.0 - 2025-07-10"@en ;
   dc:modified "2025-07-10"^^xsd:date ;
   dc:contributor "https://github.com/git2RDFLab" ;
-  owl:priorVersion <https://purl.archive.org/git2rdflab/v1/git2RDFLab-platform#> .
+  owl:priorVersion <https://purl.archive.org/git2rdf/v1/git2RDFLab-platform#> .
 
 #
 # ╭──────────────────────────────────────────────────╮
@@ -426,3 +427,21 @@ platform:skipped a platform:JobConclusion ;
 # Equivalence declarations for v1 compatibility
 platform:ticketTitle owl:equivalentProperty platform:title .
 platform:ticketBody owl:equivalentProperty platform:body .
+
+
+#
+# ╭──────────────────────────────────────────────────╮
+# │ Linking Properties                               │
+# ╰──────────────────────────────────────────────────╯
+#
+
+@prefix rating: <https://purl.archive.org/git2rdf/v2/git2RDFLab-rating#> .
+
+platform:hasRating a rdf:Property ;
+    rdfs:label "Has Rating"@en ;
+    rdfs:comment "Links a platform entity (like a Ticket or Person) to a rating about it."@en ;
+    # The domain is left open so you can flexibly rate any platform entity.
+    rdfs:range rating:Rating ;
+    # This formally connects the platform schema to the rating schema.
+    owl:inverseOf rating:ratedEntity .
+
