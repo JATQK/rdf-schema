@@ -8,6 +8,7 @@
 @prefix platform: <https://purl.archive.org/git2rdf/v2/git2RDFLab-platform#> .
 @prefix github: <https://purl.archive.org/git2rdf/v2/git2RDFLab-platform-github#> .
 
+
 #
 # ╭──────────────────────────────────────────────────╮
 # │ Metadata                                         │
@@ -262,3 +263,4 @@ github:hasRating a rdf:Property ;
     # applied to GitHubIssue, GitHubPullRequest, GitCommit, etc.
     rdfs:range rating:Rating ;
     owl:inverseOf rating:ratedEntity .
+

@@ -6,6 +6,7 @@
 @prefix ns0: <http://purl.org/vocab/vann/> .
 @prefix platform: <https://purl.archive.org/git2rdf/v2/git2RDFLab-platform#> .
 
+
 #
 # ╭──────────────────────────────────────────────────╮
 # │ Metadata                                         │
@@ -443,3 +444,4 @@ platform:hasRating a rdf:Property ;
     rdfs:range rating:Rating ;
     # This formally connects the platform schema to the rating schema.
     owl:inverseOf rating:ratedEntity .
+
