@@ -264,3 +264,32 @@ github:hasRating a rdf:Property ;
     rdfs:range rating:Rating ;
     owl:inverseOf rating:ratedEntity .
 
+
+#
+# ╭──────────────────────────────────────────────────╮
+# │ Linking Properties                               │
+# ╰──────────────────────────────────────────────────╯
+#
+
+@prefix rating: <https://purl.archive.org/git2rdf/v2/git2RDFLab-rating#> .
+
+github:hasEvaluation a rdf:Property ;
+    rdfs:label "Has Evaluation"@en ;
+    rdfs:comment "Links a GitHub entity to structured evaluations about it."@en ;
+    rdfs:domain rdfs:Resource ;
+    rdfs:range rating:Evaluation .
+
+github:hasRating a rdf:Property ;
+    rdfs:label "Has Rating"@en ;
+    rdfs:comment "Links a GitHub entity to individual ratings about it."@en ;
+    rdfs:domain rdfs:Resource ;
+    rdfs:range rating:Rating ;
+    owl:inverseOf rating:evaluates .
+
+@prefix rating: <https://purl.archive.org/git2rdf/v2/git2RDFLab-metric#> .
+
+github:hasMetrics a rdf:Property ;
+    rdfs:label "Has Metrics"@en ;
+    rdfs:comment "Links a GitHub entity to its computed metrics report."@en ;
+    rdfs:domain rdfs:Resource ;
+    rdfs:range metrics:MetricReport .
