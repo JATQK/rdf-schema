@@ -1,8 +1,9 @@
-@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+o@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix dc: <http://purl.org/dc/terms/> .
+@prefix vann: <http://purl.org/vocab/vann/> .
 @prefix rating: <https://purl.archive.org/git2rdf/v2/git2RDFLab-rating#> .
 
 #
@@ -12,153 +13,235 @@
 #
 
 <https://purl.archive.org/git2rdf/v2/git2RDFLab-rating#>
-    a               owl:Ontology ;
-    dc:title        "The git2RDFLab Rating Ontology"@en ;
-    dc:description  "A structured schema for capturing ratings, raters, and evaluation context."@en ;
-    ns0:preferredNamespacePrefix "rating" ;
-    ns0:preferredNamespaceUri    "https://purl.archive.org/git2rdf/v2/git2RDFLab-rating#" ;
-    owl:versionInfo  "Version 1.0 - 2025-07-14"@en ;
-    dc:modified      "2025-07-14"^^xsd:date ;
-    dc:contributor   "https://github.com/git2RDFLab" .
+    a owl:Ontology ;
+    dc:title "The git2RDFLab Rating Ontology"@en ;
+    dc:description "A structured schema for capturing evaluations, ratings, and assessment context."@en ;
+    vann:preferredNamespacePrefix "rating" ;
+    vann:preferredNamespaceUri "https://purl.archive.org/git2rdf/v2/git2RDFLab-rating#" ;
+    owl:versionInfo "Version 2.0 - 2025-07-15"@en ;
+    dc:modified "2025-07-15"^^xsd:date ;
+    dc:contributor "https://github.com/git2RDFLab" .
 
 #
 # ╭──────────────────────────────────────────────────╮
-# │ Classes                                          │
+# │ Core Classes                                     │
 # ╰──────────────────────────────────────────────────╯
 #
 
-rating:EvaluationRun a rdfs:Class ;
-    rdfs:label "Evaluation Run"@en ;
-    rdfs:comment "A specific batch or session of evaluations, grouping multiple ratings."@en .
+rating:Evaluation a rdfs:Class ;
+    rdfs:label "Evaluation"@en ;
+    rdfs:comment "A structured assessment process containing multiple ratings."@en .
 
 rating:Rating a rdfs:Class ;
     rdfs:label "Rating"@en ;
-    rdfs:comment "A single rating event, performed by a Rater as part of an EvaluationRun."@en .
+    rdfs:comment "A single evaluative judgment within an evaluation."@en .
 
-rating:Rater a rdfs:Class ;
-    rdfs:label "Rater"@en ;
-    rdfs:comment "An agent that performs a rating. Superclass for Expert and LLMAgent."@en .
+rating:Agent a rdfs:Class ;
+    rdfs:label "Agent"@en ;
+    rdfs:comment "An entity capable of performing evaluations."@en .
 
-rating:Expert a rdfs:Class ;
-    rdfs:subClassOf rating:Rater ;
-    rdfs:label "Expert"@en .
+rating:HumanAgent a rdfs:Class ;
+    rdfs:subClassOf rating:Agent ;
+    rdfs:label "Human Agent"@en ;
+    rdfs:comment "A human evaluator performing ratings."@en .
 
-rating:LLMAgent a rdfs:Class ;
-    rdfs:subClassOf rating:Rater ;
-    rdfs:label "LLM Agent"@en .
+rating:AutomatedAgent a rdfs:Class ;
+    rdfs:subClassOf rating:Agent ;
+    rdfs:label "Automated Agent"@en ;
+    rdfs:comment "An automated system or model performing ratings."@en .
 
-rating:Metric a rdfs:Class ;
-    rdfs:label "Metric"@en ;
-    rdfs:comment "Defines a specific criterion used for a rating."@en .
+rating:Criterion a rdfs:Class ;
+    rdfs:label "Criterion"@en ;
+    rdfs:comment "A specific aspect or dimension being evaluated."@en .
+
+rating:Scale a rdfs:Class ;
+    rdfs:label "Scale"@en ;
+    rdfs:comment "A measurement scale defining possible rating values."@en .
 
 #
 # ╭──────────────────────────────────────────────────╮
-# │ Properties                                       │
+# │ Core Relationships                               │
 # ╰──────────────────────────────────────────────────╯
 #
 
-# -- Linking Properties --
+rating:contains a rdf:Property ;
+    rdfs:label "contains"@en ;
+    rdfs:comment "Links an evaluation to the ratings it contains."@en ;
+    rdfs:domain rating:Evaluation ;
+    rdfs:range rating:Rating .
 
-rating:hasRating a rdf:Property ;
-    rdfs:label    "Has Rating"@en ;
-    rdfs:comment  "Links an EvaluationRun to each Rating it contains."@en ;
-    rdfs:domain   rating:EvaluationRun ;
-    rdfs:range    rating:Rating .
+rating:evaluates a rdf:Property ;
+    rdfs:label "evaluates"@en ;
+    rdfs:comment "Points to the resource being evaluated."@en ;
+    rdfs:domain rating:Rating ;
+    rdfs:range rdfs:Resource .
 
 rating:performedBy a rdf:Property ;
-    rdfs:label    "Performed By"@en ;
-    rdfs:comment  "Identifies the Rater (Expert or LLMAgent) who made the rating."@en ;
-    rdfs:domain   rating:Rating ;
-    rdfs:range    rating:Rater .
+    rdfs:label "performed by"@en ;
+    rdfs:comment "Identifies the agent who performed the rating."@en ;
+    rdfs:domain rating:Rating ;
+    rdfs:range rating:Agent .
 
-rating:ratedEntity a rdf:Property ;
-    rdfs:label    "Rated Entity"@en ;
-    rdfs:comment  "Points to the resource that was evaluated in this rating event."@en ;
-    rdfs:domain   rating:Rating ;
-    rdfs:range    rdfs:Resource .
+rating:accordingTo a rdf:Property ;
+    rdfs:label "according to"@en ;
+    rdfs:comment "Specifies the criterion used for the rating."@en ;
+    rdfs:domain rating:Rating ;
+    rdfs:range rating:Criterion .
 
-# -- EvaluationRun Properties --
+rating:onScale a rdf:Property ;
+    rdfs:label "on scale"@en ;
+    rdfs:comment "Specifies the scale on which the rating is given."@en ;
+    rdfs:domain rating:Rating ;
+    rdfs:range rating:Scale .
 
-rating:runVersion a rdf:Property ;
-    rdfs:label    "Run Version"@en ;
-    rdfs:comment  "Version identifier for the evaluation session or tool used."@en ;
-    rdfs:domain   rating:EvaluationRun ;
-    rdfs:range    xsd:string .
+#
+# ╭──────────────────────────────────────────────────╮
+# │ Rating Properties                                │
+# ╰──────────────────────────────────────────────────╯
+#
 
-rating:runDate a rdf:Property ;
-    rdfs:label    "Run Date"@en ;
-    rdfs:comment  "Date on which the evaluation run was executed."@en ;
-    rdfs:domain   rating:EvaluationRun ;
-    rdfs:range    xsd:date .
+rating:hasValue a rdf:Property ;
+    rdfs:label "has value"@en ;
+    rdfs:comment "The actual rating value assigned."@en ;
+    rdfs:domain rating:Rating ;
+    rdfs:range rdfs:Literal .
 
-# -- Rating Properties --
+rating:hasRationale a rdf:Property ;
+    rdfs:label "has rationale"@en ;
+    rdfs:comment "Textual explanation or justification for the rating."@en ;
+    rdfs:domain rating:Rating ;
+    rdfs:range xsd:string .
 
-rating:score a rdf:Property ;
-    rdfs:label    "Score"@en ;
-    rdfs:comment  "Numeric score assigned in the rating, per the associated metric."@en ;
-    rdfs:domain   rating:Rating ;
-    rdfs:range    xsd:decimal .
+rating:confidence a rdf:Property ;
+    rdfs:label "confidence"@en ;
+    rdfs:comment "Confidence level of the rating agent in their assessment."@en ;
+    rdfs:domain rating:Rating ;
+    rdfs:range xsd:decimal .
 
-rating:feedback a rdf:Property ;
-    rdfs:label    "Feedback"@en ;
-    rdfs:comment  "Textual feedback or rationale provided by the rater."@en ;
-    rdfs:domain   rating:Rating ;
-    rdfs:range    xsd:string .
+#
+# ╭──────────────────────────────────────────────────╮
+# │ Evaluation Properties                            │
+# ╰──────────────────────────────────────────────────╯
+#
 
-rating:usesMetric a rdf:Property ;
-    rdfs:label    "Uses Metric"@en ;
-    rdfs:comment  "Specifies which Metric was applied for this rating."@en ;
-    rdfs:domain   rating:Rating ;
-    rdfs:range    rating:Metric .
+rating:startedAt a rdf:Property ;
+    rdfs:label "started at"@en ;
+    rdfs:comment "Timestamp when the evaluation began."@en ;
+    rdfs:domain rating:Evaluation ;
+    rdfs:range xsd:dateTime .
 
-# -- Rater Properties --
+rating:completedAt a rdf:Property ;
+    rdfs:label "completed at"@en ;
+    rdfs:comment "Timestamp when the evaluation was completed."@en ;
+    rdfs:domain rating:Evaluation ;
+    rdfs:range xsd:dateTime .
 
-rating:expertName a rdf:Property ;
-    rdfs:label    "Expert Name"@en ;
-    rdfs:comment  "Name of the human expert performing the rating."@en ;
-    rdfs:domain   rating:Expert ;
-    rdfs:range    xsd:string .
+rating:purpose a rdf:Property ;
+    rdfs:label "purpose"@en ;
+    rdfs:comment "The intended purpose or goal of the evaluation."@en ;
+    rdfs:domain rating:Evaluation ;
+    rdfs:range xsd:string .
 
-rating:expertRole a rdf:Property ;
-    rdfs:label    "Expert Role"@en ;
-    rdfs:comment  "Role or affiliation of the expert (e.g., domain specialist)."@en ;
-    rdfs:domain   rating:Expert ;
-    rdfs:range    xsd:string .
+rating:methodology a rdf:Property ;
+    rdfs:label "methodology"@en ;
+    rdfs:comment "Description of the evaluation methodology used."@en ;
+    rdfs:domain rating:Evaluation ;
+    rdfs:range xsd:string .
 
-rating:modelName a rdf:Property ;
-    rdfs:label    "Model Name"@en ;
-    rdfs:comment  "Identifier or name of the LLM agent used for rating."@en ;
-    rdfs:domain   rating:LLMAgent ;
-    rdfs:range    xsd:string .
+#
+# ╭──────────────────────────────────────────────────╮
+# │ Agent Properties                                 │
+# ╰──────────────────────────────────────────────────╯
+#
 
-rating:temperature a rdf:Property ;
-    rdfs:label    "Temperature"@en ;
-    rdfs:comment  "The sampling temperature setting of the LLM agent during the rating."@en ;
-    rdfs:domain   rating:LLMAgent ;
-    rdfs:range    xsd:decimal .
+# Human Agent Properties
+rating:name a rdf:Property ;
+    rdfs:label "name"@en ;
+    rdfs:comment "Name of the human agent."@en ;
+    rdfs:domain rating:HumanAgent ;
+    rdfs:range xsd:string .
 
-rating:inputTokens a rdf:Property ;
-    rdfs:label    "Input Tokens"@en ;
-    rdfs:comment  "The number of input tokens processed by the LLM agent during the rating."@en ;
-    rdfs:domain   rating:LLMAgent ;
-    rdfs:range    xsd:integer .
+rating:affiliation a rdf:Property ;
+    rdfs:label "affiliation"@en ;
+    rdfs:comment "Organizational affiliation of the human agent."@en ;
+    rdfs:domain rating:HumanAgent ;
+    rdfs:range xsd:string .
 
-rating:outputTokens a rdf:Property ;
-    rdfs:label    "Output Tokens"@en ;
-    rdfs:comment  "The number of output tokens generated by the LLM agent during the rating."@en ;
-    rdfs:domain   rating:LLMAgent ;
-    rdfs:range    xsd:integer .
+rating:expertise a rdf:Property ;
+    rdfs:label "expertise"@en ;
+    rdfs:comment "Domain expertise of the human agent."@en ;
+    rdfs:domain rating:HumanAgent ;
+    rdfs:range xsd:string .
 
-# -- Metric Properties --
+# Automated Agent Properties
+rating:model a rdf:Property ;
+    rdfs:label "model"@en ;
+    rdfs:comment "Model identifier for the automated agent."@en ;
+    rdfs:domain rating:AutomatedAgent ;
+    rdfs:range xsd:string .
 
-rating:metricId a rdf:Property ;
-    rdfs:label    "Metric ID"@en ;
-    rdfs:comment  "Unique identifier for the metric."@en ;
-    rdfs:domain   rating:Metric ;
-    rdfs:range    xsd:string .
+rating:version a rdf:Property ;
+    rdfs:label "version"@en ;
+    rdfs:comment "Version of the automated agent."@en ;
+    rdfs:domain rating:AutomatedAgent ;
+    rdfs:range xsd:string .
 
-rating:instructionalPrompt a rdf:Property ;
-    rdfs:label    "Instructional Prompt"@en ;
-    rdfs:comment  "Machine-readable instructions for applying this metric."@en ;
-    rdfs:domain   rating:Metric ;
-    rdfs:range    xsd:string .
+rating:configuration a rdf:Property ;
+    rdfs:label "configuration"@en ;
+    rdfs:comment "Configuration parameters used for the automated agent."@en ;
+    rdfs:domain rating:AutomatedAgent ;
+    rdfs:range xsd:string .
+
+#
+# ╭──────────────────────────────────────────────────╮
+# │ Criterion Properties                             │
+# ╰──────────────────────────────────────────────────╯
+#
+
+rating:measures a rdf:Property ;
+    rdfs:label "measures"@en ;
+    rdfs:comment "Description of what aspect this criterion measures."@en ;
+    rdfs:domain rating:Criterion ;
+    rdfs:range xsd:string .
+
+rating:instruction a rdf:Property ;
+    rdfs:label "instruction"@en ;
+    rdfs:comment "Instructions for applying this criterion."@en ;
+    rdfs:domain rating:Criterion ;
+    rdfs:range xsd:string .
+
+rating:category a rdf:Property ;
+    rdfs:label "category"@en ;
+    rdfs:comment "Category or domain of the criterion."@en ;
+    rdfs:domain rating:Criterion ;
+    rdfs:range xsd:string .
+
+#
+# ╭──────────────────────────────────────────────────╮
+# │ Scale Properties                                 │
+# ╰──────────────────────────────────────────────────╯
+#
+
+rating:minValue a rdf:Property ;
+    rdfs:label "minimum value"@en ;
+    rdfs:comment "Minimum value on this scale."@en ;
+    rdfs:domain rating:Scale ;
+    rdfs:range rdfs:Literal .
+
+rating:maxValue a rdf:Property ;
+    rdfs:label "maximum value"@en ;
+    rdfs:comment "Maximum value on this scale."@en ;
+    rdfs:domain rating:Scale ;
+    rdfs:range rdfs:Literal .
+
+rating:scaleType a rdf:Property ;
+    rdfs:label "scale type"@en ;
+    rdfs:comment "Type of scale (ordinal, interval, ratio, categorical)."@en ;
+    rdfs:domain rating:Scale ;
+    rdfs:range xsd:string .
+
+rating:unit a rdf:Property ;
+    rdfs:label "unit"@en ;
+    rdfs:comment "Unit of measurement for the scale values."@en ;
+    rdfs:domain rating:Scale ;
+    rdfs:range xsd:string .

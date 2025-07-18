@@ -15,14 +15,14 @@
 
 github:GitRepository a rdfs:Class ;
     rdfs:subClassOf git:GitRepository ;
-    rdfs:label "GitHub Git Repository"@en ;
-    rdfs:comment "Represents a Git-Repository hosted on GitHub."@en .
+    rdfs:label "Github Git Repository"@en ;
+    rdfs:comment "Represents a Git-Repository hosted on Github."@en .
 
 # GitRepository properties
 
 github:repositoryName a rdf:Property ;
     rdfs:label "Repository name"@en ;
-    rdfs:comment "The name of this repository in GitHub."@en ;
+    rdfs:comment "The name of this repository in Github."@en ;
     rdfs:domain github:GitRepository ;
     rdfs:range xsd:string .
 
@@ -40,12 +40,12 @@ github:repositoryOwner a rdf:Property ;
 github:GitCommit a rdfs:Class ;
     rdfs:subClassOf git:GitCommit ;
     rdfs:label "Git Commit"@en ;
-    rdfs:comment "Extends a git commit with additional GitHub data."@en .
+    rdfs:comment "Extends a git commit with additional Github data."@en .
 
 # GitCommit Properties
 github:user a rdf:Property ;
     rdfs:label "User"@en ;
-    rdfs:comment "URI of the GitHub user."@en ;
+    rdfs:comment "URI of the Github user."@en ;
     rdfs:domain github:GitCommit ;
     rdfs:range xsd:anyURI .
 
@@ -57,48 +57,48 @@ github:user a rdf:Property ;
 github:Issue a rdfs:Class ;
     rdfs:subClassOf platform:Ticket ;
     rdfs:label "Issue"@en ;
-    rdfs:comment "Represents a GitHub-Issue."@en .
+    rdfs:comment "Represents a Github-Issue."@en .
 
 # Issue Properties
 github:issueId a rdf:Property ;
     rdfs:label "IssueId"@en ;
-    rdfs:comment "The (internal) GitHub-Issue-ID."@en ;
+    rdfs:comment "The (internal) Github-Issue-ID."@en ;
     rdfs:domain github:Issue ;
     rdfs:range xsd:nonNegativeInteger .
 
 github:issueNumber a rdf:Property ;
     rdfs:label "IssueNumber"@en ;
-    rdfs:comment "The GitHub-Issue-Number (also used in GH-shortcuts like #123 and the URL)."@en ;
+    rdfs:comment "The Github-Issue-Number (also used in GH-shortcuts like #123 and the URL)."@en ;
     rdfs:domain github:Issue ;
     rdfs:range xsd:nonNegativeInteger .
 
 github:issueState a rdf:Property ;
     rdfs:label "State"@en ;
-    rdfs:comment "The state of the GitHub-Issue (Open/Closed) - See <IssueState>."@en ;
+    rdfs:comment "The state of the Github-Issue (Open/Closed) - See <IssueState>."@en ;
     rdfs:domain github:Issue ;
     rdfs:range github:IssueState .
 
 github:issueUser a rdf:Property ;
     rdfs:label "User"@en ;
-    rdfs:comment "The GitHub-Handle of the user that opened the issue."@en ;
+    rdfs:comment "The Github-Handle of the user that opened the issue."@en ;
     rdfs:domain github:Issue ;
     rdfs:range  xsd:anyURI .
 
 github:issueLabel a rdf:Property ;
     rdfs:label "Label"@en ;
-    rdfs:comment "A URI to a GitHub-Label that is assigned to this issue (JSON)."@en ;
+    rdfs:comment "A URI to a Github-Label that is assigned to this issue (JSON)."@en ;
     rdfs:domain github:Issue ;
     rdfs:range xsd:anyURI .
 
 github:issueAssignee a rdf:Property ;
     rdfs:label "Assignee"@en ;
-    rdfs:comment "A GitHub-Handle of a user that is assigned to this issue."@en ;
+    rdfs:comment "A Github-Handle of a user that is assigned to this issue."@en ;
     rdfs:domain github:Issue ;
     rdfs:range  xsd:anyURI .
 
 github:issueMilestone a rdf:Property ;
     rdfs:label "Milestone"@en ;
-    rdfs:comment "A GitHub-Milestone that is assigned to this issue."@en ;
+    rdfs:comment "A Github-Milestone that is assigned to this issue."@en ;
     rdfs:domain github:Issue ;
     rdfs:range xsd:anyURI .
 
@@ -127,16 +127,16 @@ github:issueClosedAt a rdf:Property ;
 #
 github:IssueState a rdfs:Class ;
     rdfs:label "Issue State"@en ;
-    rdfs:comment "State of a GitHub-Issue."@en .
+    rdfs:comment "State of a Github-Issue."@en .
 
 github:open a github:IssueState ;
     rdfs:label "Open"@en ;
-    rdfs:comment "The GitHub-Issue is open."@en .
+    rdfs:comment "The Github-Issue is open."@en .
 
 github:closed a github:IssueState ;
     rdfs:label "Closed"@en ;
-    rdfs:comment "The GitHub-Issue is closed."@en .
+    rdfs:comment "The Github-Issue is closed."@en .
 
 github:all a github:IssueState ;
     rdfs:label "All"@en ;
-    rdfs:comment "Contains open and closed GitHub-Issues."@en .
+    rdfs:comment "Contains open and closed Github-Issues."@en .
