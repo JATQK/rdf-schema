@@ -53,42 +53,6 @@ github:repositoryOwner a rdf:Property ;
     rdfs:domain github:GitRepository ;
     rdfs:range github:GithubUser .
 
-github:repositoryDescription a rdf:Property ;
-    rdfs:label "Repository Description"@en ;
-    rdfs:comment "The description of the repository."@en ;
-    rdfs:domain github:GitRepository ;
-    rdfs:range xsd:string .
-
-github:isPrivate a rdf:Property ;
-    rdfs:label "Is Private"@en ;
-    rdfs:comment "Whether the repository is private."@en ;
-    rdfs:domain github:GitRepository ;
-    rdfs:range xsd:boolean .
-
-github:forksCount a rdf:Property ;
-    rdfs:label "Forks Count"@en ;
-    rdfs:comment "The number of forks of this repository."@en ;
-    rdfs:domain github:GitRepository ;
-    rdfs:range xsd:nonNegativeInteger .
-
-github:starsCount a rdf:Property ;
-    rdfs:label "Stars Count"@en ;
-    rdfs:comment "The number of stars this repository has."@en ;
-    rdfs:domain github:GitRepository ;
-    rdfs:range xsd:nonNegativeInteger .
-
-github:watchersCount a rdf:Property ;
-    rdfs:label "Watchers Count"@en ;
-    rdfs:comment "The number of watchers of this repository."@en ;
-    rdfs:domain github:GitRepository ;
-    rdfs:range xsd:nonNegativeInteger .
-
-github:defaultBranch a rdf:Property ;
-    rdfs:label "Default Branch"@en ;
-    rdfs:comment "The name of the default branch."@en ;
-    rdfs:domain github:GitRepository ;
-    rdfs:range xsd:string .
-
 #
 # ╭──────────────────────────────────────────────────╮
 # │ Class: GithubUser                                │
@@ -111,12 +75,6 @@ github:userId a rdf:Property ;
     rdfs:comment "The unique Github user ID."@en ;
     rdfs:domain github:GithubUser ;
     rdfs:range xsd:nonNegativeInteger .
-
-github:avatarUrl a rdf:Property ;
-    rdfs:label "Avatar URL"@en ;
-    rdfs:comment "The URL to the user's avatar image."@en ;
-    rdfs:domain github:GithubUser ;
-    rdfs:range xsd:anyURI .
 
 github:userType a rdf:Property ;
     rdfs:label "User Type"@en ;
@@ -143,17 +101,41 @@ github:user a rdf:Property ;
     rdfs:domain github:GitCommit ;
     rdfs:range github:GithubUser .
 
-github:commentsUrl a rdf:Property ;
-    rdfs:label "Comments URL"@en ;
-    rdfs:comment "URL to view comments on this commit."@en ;
-    rdfs:domain github:GitCommit ;
-    rdfs:range xsd:anyURI .
-
 github:htmlUrl a rdf:Property ;
     rdfs:label "HTML URL"@en ;
     rdfs:comment "The Github web URL for this commit."@en ;
     rdfs:domain github:GitCommit ;
     rdfs:range xsd:anyURI .
+
+github:issue a rdf:Property ;
+    rdfs:label "Issue"@en ;
+    rdfs:comment "Links a commit to a Github issue it references."@en ;
+    rdfs:domain github:GitCommit ;
+    rdfs:range github:GithubIssue .
+
+github:partOfIssue a rdf:Property ;
+    rdfs:label "Part Of Issue"@en ;
+    rdfs:comment "Links a commit to a Github issue it is part of."@en ;
+    rdfs:domain github:GitCommit ;
+    rdfs:range github:GithubIssue .
+
+github:partOfPullRequest a rdf:Property ;
+    rdfs:label "Part Of Pull Request"@en ;
+    rdfs:comment "Links a commit to a Github pull request it is part of."@en ;
+    rdfs:domain github:GitCommit ;
+    rdfs:range github:GithubPullRequest .
+
+github:isMerged a rdf:Property ;
+    rdfs:label "Is Merged"@en ;
+    rdfs:comment "Indicates whether this commit is from a merged pull request."@en ;
+    rdfs:domain github:GitCommit ;
+    rdfs:range xsd:boolean .
+
+github:mergedIntoIssue a rdf:Property ;
+    rdfs:label "Merged Into Issue"@en ;
+    rdfs:comment "Links a commit to the issue it was merged into."@en ;
+    rdfs:domain github:GitCommit ;
+    rdfs:range github:GithubIssue .
 
 #
 # ╭──────────────────────────────────────────────────╮
@@ -228,24 +210,6 @@ github:mergedBy a rdf:Property ;
     rdfs:comment "The user who merged the pull request."@en ;
     rdfs:domain github:GithubPullRequest ;
     rdfs:range github:GithubUser .
-
-github:headBranch a rdf:Property ;
-    rdfs:label "Head Branch"@en ;
-    rdfs:comment "The head branch of the pull request."@en ;
-    rdfs:domain github:GithubPullRequest ;
-    rdfs:range xsd:string .
-
-github:baseBranch a rdf:Property ;
-    rdfs:label "Base Branch"@en ;
-    rdfs:comment "The base branch that the pull request targets."@en ;
-    rdfs:domain github:GithubPullRequest ;
-    rdfs:range xsd:string .
-
-github:draft a rdf:Property ;
-    rdfs:label "Draft"@en ;
-    rdfs:comment "Whether the pull request is a draft."@en ;
-    rdfs:domain github:GithubPullRequest ;
-    rdfs:range xsd:boolean .
 
 #
 # ╭──────────────────────────────────────────────────╮
