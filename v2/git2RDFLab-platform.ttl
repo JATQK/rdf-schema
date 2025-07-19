@@ -444,10 +444,11 @@ platform:hasRating a rdf:Property ;
     rdfs:range rating:Rating ;
     owl:inverseOf rating:evaluates . 
 
-@prefix rating: <https://purl.archive.org/git2rdf/v2/git2RDFLab-metric#> .
+@prefix statistic: <https://purl.archive.org/git2rdf/v2/git2RDFLab-statistic#> .
 
-platform:hasMetrics a rdf:Property ;
-    rdfs:label "Has Metrics"@en ;
-    rdfs:comment "Links a platform entity to its computed metrics report."@en ;
-    rdfs:domain rdfs:Resource ; 
-    rdfs:range metrics:MetricReport .
+platform:hasStatistic a rdf:Property ;
+    rdfs:label "Has Statistic"@en ;
+    rdfs:comment "Links a platform entity (like an Issue or User) to a statistic about it."@en ;
+    rdfs:domain rdfs:Resource ;
+    rdfs:range statistic:Metric ;
+    owl:inverseOf statistic:measuredEntity .

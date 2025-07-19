@@ -490,10 +490,11 @@ git:hasRating a rdf:Property ;
     rdfs:range rating:Rating ;
     owl:inverseOf rating:evaluates .
 
-@prefix rating: <https://purl.archive.org/git2rdf/v2/git2RDFLab-metric#> .
+@prefix statistic: <https://purl.archive.org/git2rdf/v2/git2RDFLab-statistic#> .
 
-git:hasMetrics a rdf:Property ;
-    rdfs:label "Has Metrics"@en ;
-    rdfs:comment "Links a git entity to its computed metrics report."@en ;
-    rdfs:domain rdfs:Resource ;  # Any git entity can have metrics
-    rdfs:range metrics:MetricReport .
+git:hasStatistic a rdf:Property ;
+    rdfs:label "Has Statistic"@en ;
+    rdfs:comment "Links a git entity (like a Commit or Repository) to a statistic about it."@en ;
+    rdfs:domain rdfs:Resource ;
+    rdfs:range statistic:Metric ;
+    owl:inverseOf statistic:measuredEntity .
