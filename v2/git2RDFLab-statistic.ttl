@@ -84,8 +84,8 @@ statistic:statisticId a rdf:Property ;
 
 statistic:name a rdf:Property ;
     rdfs:label "name"@en ;
-    rdfs:comment "Human-readable name for the statistic (e.g., 'Total Commits', 'Merged But Failed Workflow')."@en ;
-    rdfs:domain statistic:Statistic ;
+    rdfs:comment "Identifier name for the metric (e.g., 'lastWorkflowInIssueSuccessful', 'mergedIssuesWithMinimumApprovals')."@en ;
+    rdfs:domain statistic:Metric ;
     rdfs:range xsd:string .
 
 statistic:value a rdf:Property ;
