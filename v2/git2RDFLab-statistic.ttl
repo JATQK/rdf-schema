@@ -32,12 +32,12 @@ statistic:StatisticReport a rdfs:Class ;
     rdfs:label "Statistic Report"@en ;
     rdfs:comment "A collection of computed statistics for a target entity at a specific time."@en .
 
-statistic:Statistic a rdfs:Class ;
-    rdfs:label "Statistic"@en ;
-    rdfs:comment "A computed measurement or calculated value."@en .
-
 statistic:Metric a rdfs:Class ;
     rdfs:label "Metric"@en ;
+    rdfs:comment "A statistic definition/template (like 'lastWorkflowInIssueSuccessful')."@en .
+
+statistic:Statistic a rdfs:Class ;
+    rdfs:label "Statistic"@en ;
     rdfs:comment "A specific instance of a statistic measurement for an entity."@en .
 
 #
@@ -58,16 +58,16 @@ statistic:measures a rdf:Property ;
     rdfs:domain statistic:StatisticReport ;
     rdfs:range rdfs:Resource .
 
-statistic:statistic a rdf:Property ;
-    rdfs:label "statistic"@en ;
-    rdfs:comment "Links a metric to its statistic definition."@en ;
-    rdfs:domain statistic:Metric ;
-    rdfs:range statistic:Statistic .
+statistic:metric a rdf:Property ;
+    rdfs:label "metric"@en ;
+    rdfs:comment "Links a statistic instance to its metric definition."@en ;
+    rdfs:domain statistic:Statistic ;
+    rdfs:range statistic:Metric .
 
 statistic:measuredEntity a rdf:Property ;
     rdfs:label "measured entity"@en ;
-    rdfs:comment "Links a metric to the entity being measured."@en ;
-    rdfs:domain statistic:Metric ;
+    rdfs:comment "Links a statistic instance to the entity being measured."@en ;
+    rdfs:domain statistic:Statistic ;
     rdfs:range rdfs:Resource .
 
 #
@@ -91,7 +91,7 @@ statistic:name a rdf:Property ;
 statistic:value a rdf:Property ;
     rdfs:label "value"@en ;
     rdfs:comment "The computed statistic value."@en ;
-    rdfs:domain statistic:Metric ;
+    rdfs:domain statistic:Statistic ;
     rdfs:range rdfs:Literal .
 
 statistic:dataType a rdf:Property ;
@@ -138,8 +138,8 @@ statistic:computedAt a rdf:Property ;
 
 statistic:calculationDate a rdf:Property ;
     rdfs:label "calculation date"@en ;
-    rdfs:comment "Timestamp when the metric was calculated."@en ;
-    rdfs:domain statistic:Metric ;
+    rdfs:comment "Timestamp when the statistic was calculated."@en ;
+    rdfs:domain statistic:Statistic ;
     rdfs:range xsd:dateTime .
 
 statistic:version a rdf:Property ;
