@@ -82,6 +82,12 @@ github:userType a rdf:Property ;
     rdfs:domain github:GithubUser ;
     rdfs:range github:UserType .
 
+github:gitAuthorEmail a rdf:Property ;
+    rdfs:label "Git Author Email"@en ;
+    rdfs:comment "Links a GitHub user to their git commit author email address."@en ;
+    rdfs:domain github:GithubUser ;
+    rdfs:range xsd:string .
+
 #
 # ╭──────────────────────────────────────────────────╮
 # │ Class: GitCommit (Github Extension)              │
@@ -568,5 +574,5 @@ github:hasStatistic a rdf:Property ;
     rdfs:label "Has Statistic"@en ;
     rdfs:comment "Links a Github entity (like an Issue, PR, or Commit) to a statistic about it."@en ;
     rdfs:domain rdfs:Resource ;
-    rdfs:range statistic:Metric ;
+    rdfs:range statistic:Statistic ;
     owl:inverseOf statistic:measuredEntity .
