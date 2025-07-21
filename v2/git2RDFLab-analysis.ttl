@@ -1,0 +1,390 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix dc: <http://purl.org/dc/terms/> .
+@prefix vann: <http://purl.org/vocab/vann/> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix analysis: <https://purl.archive.org/git2rdf/v2/git2RDFLab-analysis#> .
+
+#
+# ╭──────────────────────────────────────────────────╮
+# │ Metadata                                         │
+# ╰──────────────────────────────────────────────────╯
+#
+
+<https://purl.archive.org/git2rdf/v2/git2RDFLab-analysis#>
+    a owl:Ontology ;
+    dc:title "The git2RDFLab Unified Analysis Ontology"@en ;
+    dc:description "A unified schema for capturing measurements, evaluations, and assessments with optimized query patterns."@en ;
+    vann:preferredNamespacePrefix "analysis" ;
+    vann:preferredNamespaceUri "https://purl.archive.org/git2rdf/v2/git2RDFLab-analysis#" ;
+    owl:versionInfo "Version 2.0 - 2025-07-20"@en ;
+    dc:modified "2025-07-20"^^xsd:date ;
+    dc:contributor "https://github.com/git2RDFLab" ;
+    rdfs:comment """This ontology unifies rating and statistic concepts using a hot/cold data pattern:
+    - ResultEvent contains 'hot data' for fast queries (value, metricId, timestamp)
+    - 'Cold links' provide detailed drill-down to rich context (metrics, executions, configurations)"""@en .
+
+#
+# ╭──────────────────────────────────────────────────╮
+# │ Core Classes                                     │
+# ╰──────────────────────────────────────────────────╯
+#
+
+analysis:ResultEvent a rdfs:Class ;
+    rdfs:subClassOf prov:Entity ;
+    rdfs:label "Result Event"@en ;
+    rdfs:comment "A smart hub containing frequently-queried data directly (hot data) and links to detailed context (cold links). The central entity for both qualitative ratings and quantitative measurements."@en .
+
+analysis:Metric a rdfs:Class ;
+    rdfs:label "Metric"@en ;
+    rdfs:comment "Definition of what aspect is being measured or evaluated. Contains rich metadata about measurement criteria."@en .
+
+analysis:Execution a rdfs:Class ;
+    rdfs:subClassOf prov:Activity ;
+    rdfs:label "Execution"@en ;
+    rdfs:comment "A structured analysis process that produces results. Captures provenance and execution context."@en .
+
+analysis:LLMConfiguration a rdfs:Class ;
+    rdfs:label "LLM Configuration"@en ;
+    rdfs:comment "Reusable configuration for Large Language Model-based analysis, including model, parameters, and prompts."@en .
+
+analysis:Agent a rdfs:Class ;
+    rdfs:subClassOf prov:Agent ;
+    rdfs:label "Agent"@en ;
+    rdfs:comment "An entity capable of performing analysis."@en .
+
+analysis:HumanAgent a rdfs:Class ;
+    rdfs:subClassOf analysis:Agent ;
+    rdfs:label "Human Agent"@en ;
+    rdfs:comment "A human evaluator."@en .
+
+analysis:AutomatedAgent a rdfs:Class ;
+    rdfs:subClassOf analysis:Agent ;
+    rdfs:label "Automated Agent"@en ;
+    rdfs:comment "An automated system, script, or model."@en .
+
+analysis:Scale a rdfs:Class ;
+    rdfs:label "Scale"@en ;
+    rdfs:comment "A measurement scale defining possible values and their interpretation."@en .
+
+#
+# ╭──────────────────────────────────────────────────╮
+# │ Primary Relationships                            │
+# ╰──────────────────────────────────────────────────╯
+#
+
+analysis:hasResult a rdf:Property ;
+    rdfs:label "has result"@en ;
+    rdfs:comment "Links an entity to its analysis result event."@en ;
+    rdfs:domain rdfs:Resource ;
+    rdfs:range analysis:ResultEvent .
+
+#
+# ╭──────────────────────────────────────────────────╮
+# │ HOT DATA Properties (Fast Query Access)         │
+# ╰──────────────────────────────────────────────────╯
+#
+
+analysis:value a rdf:Property ;
+    rdfs:label "value"@en ;
+    rdfs:comment "Hot data: The primary result value. Direct access for fast queries."@en ;
+    rdfs:domain analysis:ResultEvent ;
+    rdfs:range rdfs:Literal .
+
+analysis:metricId a rdf:Property ;
+    rdfs:label "metric ID"@en ;
+    rdfs:comment "Hot data: Quick identification of what was measured, duplicated from metric for fast queries (e.g., 'QC-S3-1', 'AUDIT-12')."@en ;
+    rdfs:domain analysis:ResultEvent ;
+    rdfs:range xsd:string .
+
+analysis:executionTimestamp a rdf:Property ;
+    rdfs:label "execution timestamp"@en ;
+    rdfs:comment "Hot data: When this result was computed. Direct access for temporal queries."@en ;
+    rdfs:domain analysis:ResultEvent ;
+    rdfs:range xsd:dateTime .
+
+analysis:category a rdf:Property ;
+    rdfs:label "category"@en ;
+    rdfs:comment "Hot data: Analysis category for quick filtering (e.g., 'audit', 'quality', 'activity')."@en ;
+    rdfs:domain analysis:ResultEvent ;
+    rdfs:range xsd:string .
+
+analysis:status a rdf:Property ;
+    rdfs:label "status"@en ;
+    rdfs:comment "Hot data: Computation status for quick filtering (SUCCESS, FAILED, PENDING)."@en ;
+    rdfs:domain analysis:ResultEvent ;
+    rdfs:range xsd:string .
+
+analysis:dataType a rdf:Property ;
+    rdfs:label "data type"@en ;
+    rdfs:comment "Hot data: Value type for query optimization (boolean, integer, decimal, string)."@en ;
+    rdfs:domain analysis:ResultEvent ;
+    rdfs:range xsd:string .
+
+#
+# ╭──────────────────────────────────────────────────╮
+# │ COLD LINKS (Detailed Drill-down)                │
+# ╰──────────────────────────────────────────────────╯
+#
+
+analysis:measuredEntity a rdf:Property ;
+    rdfs:label "measured entity"@en ;
+    rdfs:comment "Cold link: The entity that was analyzed (for detailed context)."@en ;
+    rdfs:domain analysis:ResultEvent ;
+    rdfs:range rdfs:Resource .
+
+analysis:basedOnMetric a rdf:Property ;
+    rdfs:label "based on metric"@en ;
+    rdfs:comment "Cold link: Full metric definition (for detailed metadata)."@en ;
+    rdfs:domain analysis:ResultEvent ;
+    rdfs:range analysis:Metric .
+
+analysis:onScale a rdf:Property ;
+    rdfs:label "on scale"@en ;
+    rdfs:comment "Cold link: Scale definition (for value interpretation)."@en ;
+    rdfs:domain analysis:ResultEvent ;
+    rdfs:range analysis:Scale .
+
+#
+# ╭──────────────────────────────────────────────────╮
+# │ Result Event Additional Properties               │
+# ╰──────────────────────────────────────────────────╯
+#
+
+analysis:feedback a rdf:Property ;
+    rdfs:label "feedback"@en ;
+    rdfs:comment "Textual explanation, rationale, or qualitative feedback."@en ;
+    rdfs:domain analysis:ResultEvent ;
+    rdfs:range xsd:string .
+
+analysis:confidence a rdf:Property ;
+    rdfs:label "confidence"@en ;
+    rdfs:comment "Confidence level in the result (0.0-1.0)."@en ;
+    rdfs:domain analysis:ResultEvent ;
+    rdfs:range xsd:decimal .
+
+analysis:unit a rdf:Property ;
+    rdfs:label "unit"@en ;
+    rdfs:comment "Unit of measurement (e.g., 'count', 'percentage', 'days')."@en ;
+    rdfs:domain analysis:ResultEvent ;
+    rdfs:range xsd:string .
+
+# LLM-specific result properties
+analysis:inputTokens a rdf:Property ;
+    rdfs:label "input tokens"@en ;
+    rdfs:comment "Number of input tokens used for this result."@en ;
+    rdfs:domain analysis:ResultEvent ;
+    rdfs:range xsd:integer .
+
+analysis:outputTokens a rdf:Property ;
+    rdfs:label "output tokens"@en ;
+    rdfs:comment "Number of output tokens generated for this result."@en ;
+    rdfs:domain analysis:ResultEvent ;
+    rdfs:range xsd:integer .
+
+#
+# ╭──────────────────────────────────────────────────╮
+# │ Execution Properties                             │
+# ╰──────────────────────────────────────────────────╯
+#
+
+analysis:contains a rdf:Property ;
+    rdfs:label "contains"@en ;
+    rdfs:comment "Links an execution to the results it produced."@en ;
+    rdfs:domain analysis:Execution ;
+    rdfs:range analysis:ResultEvent .
+
+analysis:purpose a rdf:Property ;
+    rdfs:label "purpose"@en ;
+    rdfs:comment "The intended purpose or goal of the analysis execution."@en ;
+    rdfs:domain analysis:Execution ;
+    rdfs:range xsd:string .
+
+analysis:scope a rdf:Property ;
+    rdfs:label "scope"@en ;
+    rdfs:comment "Temporal or logical scope (e.g., 'all-time', 'last-30-days')."@en ;
+    rdfs:domain analysis:Execution ;
+    rdfs:range xsd:string .
+
+analysis:version a rdf:Property ;
+    rdfs:label "version"@en ;
+    rdfs:comment "Version of the analysis system or tool."@en ;
+    rdfs:domain analysis:Execution ;
+    rdfs:range xsd:string .
+
+analysis:taskId a rdf:Property ;
+    rdfs:label "task ID"@en ;
+    rdfs:comment "Identifier of the task associated with this execution."@en ;
+    rdfs:domain analysis:Execution ;
+    rdfs:range xsd:string .
+
+analysis:experimentName a rdf:Property ;
+    rdfs:label "experiment name"@en ;
+    rdfs:comment "Name of the experiment this execution is part of."@en ;
+    rdfs:domain analysis:Execution ;
+    rdfs:range xsd:string .
+
+#
+# ╭──────────────────────────────────────────────────╮
+# │ Metric Properties                                │
+# ╰──────────────────────────────────────────────────╯
+#
+
+analysis:metricId a rdf:Property ;
+    rdfs:label "metric ID"@en ;
+    rdfs:comment "Unique identifier for the metric definition (e.g., 'QC-S3-1', 'AUDIT-05')."@en ;
+    rdfs:domain analysis:Metric ;
+    rdfs:range xsd:string .
+
+analysis:name a rdf:Property ;
+    rdfs:label "name"@en ;
+    rdfs:comment "Identifier name for the metric."@en ;
+    rdfs:domain analysis:Metric ;
+    rdfs:range xsd:string .
+
+analysis:measures a rdf:Property ;
+    rdfs:label "measures"@en ;
+    rdfs:comment "Description of what aspect this metric measures."@en ;
+    rdfs:domain analysis:Metric ;
+    rdfs:range xsd:string .
+
+analysis:instruction a rdf:Property ;
+    rdfs:label "instruction"@en ;
+    rdfs:comment "Instructions for applying this metric."@en ;
+    rdfs:domain analysis:Metric ;
+    rdfs:range xsd:string .
+
+analysis:description a rdf:Property ;
+    rdfs:label "description"@en ;
+    rdfs:comment "Human-readable description of what this metric measures."@en ;
+    rdfs:domain analysis:Metric ;
+    rdfs:range xsd:string .
+
+analysis:metricType a rdf:Property ;
+    rdfs:label "metric type"@en ;
+    rdfs:comment "Type classification (rating, measurement, check, audit)."@en ;
+    rdfs:domain analysis:Metric ;
+    rdfs:range xsd:string .
+
+analysis:expectedScale a rdf:Property ;
+    rdfs:label "expected scale"@en ;
+    rdfs:comment "Scale definition (e.g., '1-10', 'boolean', 'percentage')."@en ;
+    rdfs:domain analysis:Metric ;
+    rdfs:range xsd:string .
+
+analysis:usesField a rdf:Property ;
+    rdfs:label "uses field"@en ;
+    rdfs:comment "Specifies a data field that this metric evaluates."@en ;
+    rdfs:domain analysis:Metric ;
+    rdfs:range xsd:string .
+
+#
+# ╭──────────────────────────────────────────────────╮
+# │ LLM Configuration Properties                     │
+# ╰──────────────────────────────────────────────────╯
+#
+
+analysis:modelName a rdf:Property ;
+    rdfs:label "model name"@en ;
+    rdfs:comment "Name of the LLM model."@en ;
+    rdfs:domain analysis:LLMConfiguration ;
+    rdfs:range xsd:string .
+
+analysis:modelVersion a rdf:Property ;
+    rdfs:label "model version"@en ;
+    rdfs:comment "Version of the LLM model."@en ;
+    rdfs:domain analysis:LLMConfiguration ;
+    rdfs:range xsd:string .
+
+analysis:provider a rdf:Property ;
+    rdfs:label "provider"@en ;
+    rdfs:comment "Service provider (e.g., 'openai', 'mistral', 'openrouter')."@en ;
+    rdfs:domain analysis:LLMConfiguration ;
+    rdfs:range xsd:string .
+
+analysis:temperature a rdf:Property ;
+    rdfs:label "temperature"@en ;
+    rdfs:comment "Temperature parameter for generation."@en ;
+    rdfs:domain analysis:LLMConfiguration ;
+    rdfs:range xsd:decimal .
+
+analysis:maxTokens a rdf:Property ;
+    rdfs:label "max tokens"@en ;
+    rdfs:comment "Maximum number of tokens for generation."@en ;
+    rdfs:domain analysis:LLMConfiguration ;
+    rdfs:range xsd:integer .
+
+analysis:timeout a rdf:Property ;
+    rdfs:label "timeout"@en ;
+    rdfs:comment "Timeout value in milliseconds."@en ;
+    rdfs:domain analysis:LLMConfiguration ;
+    rdfs:range xsd:integer .
+
+analysis:promptTemplate a rdf:Property ;
+    rdfs:label "prompt template"@en ;
+    rdfs:comment "Identifier of the prompt template used."@en ;
+    rdfs:domain analysis:LLMConfiguration ;
+    rdfs:range xsd:string .
+
+analysis:promptVersion a rdf:Property ;
+    rdfs:label "prompt version"@en ;
+    rdfs:comment "Version of the prompt template."@en ;
+    rdfs:domain analysis:LLMConfiguration ;
+    rdfs:range xsd:integer .
+
+#
+# ╭──────────────────────────────────────────────────╮
+# │ Agent Properties                                 │
+# ╰──────────────────────────────────────────────────╯
+#
+
+analysis:agentName a rdf:Property ;
+    rdfs:label "agent name"@en ;
+    rdfs:comment "Name of the agent."@en ;
+    rdfs:domain analysis:Agent ;
+    rdfs:range xsd:string .
+
+analysis:affiliation a rdf:Property ;
+    rdfs:label "affiliation"@en ;
+    rdfs:comment "Organizational affiliation of the human agent."@en ;
+    rdfs:domain analysis:HumanAgent ;
+    rdfs:range xsd:string .
+
+analysis:expertise a rdf:Property ;
+    rdfs:label "expertise"@en ;
+    rdfs:comment "Domain expertise of the human agent."@en ;
+    rdfs:domain analysis:HumanAgent ;
+    rdfs:range xsd:string .
+
+analysis:model a rdf:Property ;
+    rdfs:label "model"@en ;
+    rdfs:comment "Model identifier for the automated agent."@en ;
+    rdfs:domain analysis:AutomatedAgent ;
+    rdfs:range xsd:string .
+
+#
+# ╭──────────────────────────────────────────────────╮
+# │ Scale Properties                                 │
+# ╰──────────────────────────────────────────────────╯
+#
+
+analysis:minValue a rdf:Property ;
+    rdfs:label "minimum value"@en ;
+    rdfs:comment "Minimum value on this scale."@en ;
+    rdfs:domain analysis:Scale ;
+    rdfs:range rdfs:Literal .
+
+analysis:maxValue a rdf:Property ;
+    rdfs:label "maximum value"@en ;
+    rdfs:comment "Maximum value on this scale."@en ;
+    rdfs:domain analysis:Scale ;
+    rdfs:range rdfs:Literal .
+
+analysis:scaleType a rdf:Property ;
+    rdfs:label "scale type"@en ;
+    rdfs:comment "Type of scale (ordinal, interval, ratio, categorical, boolean)."@en ;
+    rdfs:domain analysis:Scale ;
+    rdfs:range xsd:string .
+

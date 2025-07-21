@@ -19,10 +19,11 @@
   dc:description "The git2RDFLab platform ontology v2 provides entities found in external git platform providers, including issues, users, comments, and workflows"@en ;
   ns0:preferredNamespacePrefix "platform" ;
   ns0:preferredNamespaceUri "https://purl.archive.org/git2rdf/v2/git2RDFLab-platform#" ;
-  owl:versionInfo "Version 2.0 - 2025-07-15"@en ;
-  dc:modified "2025-07-15"^^xsd:date ;
+  owl:versionInfo "Version 2.1 - 2025-07-20"@en ;
+  dc:modified "2025-07-20"^^xsd:date ;
   dc:contributor "https://github.com/git2RDFLab" ;
-  owl:priorVersion <https://purl.archive.org/git2rdf/v1/git2RDFLab-platform#> .
+  owl:priorVersion <https://purl.archive.org/git2rdf/v1/git2RDFLab-platform#> ;
+  owl:imports <https://purl.archive.org/git2rdf/v2/git2RDFLab-analysis#> .
 
 #
 # ╭──────────────────────────────────────────────────╮
@@ -429,26 +430,17 @@ platform:ticketBody owl:equivalentProperty platform:body .
 # ╰──────────────────────────────────────────────────╯
 #
 
-@prefix rating: <https://purl.archive.org/git2rdf/v2/git2RDFLab-rating#> .
+@prefix analysis: <https://purl.archive.org/git2rdf/v2/git2RDFLab-analysis#> .
 
-platform:hasEvaluation a rdf:Property ;
-    rdfs:label "Has Evaluation"@en ;
-    rdfs:comment "Links a platform entity to structured evaluations about it."@en ;
-    rdfs:domain rdfs:Resource ;  
-    rdfs:range rating:Evaluation .
-
-platform:hasRating a rdf:Property ;
-    rdfs:label "Has Rating"@en ;
-    rdfs:comment "Links a platform entity directly to individual ratings about it."@en ;
-    rdfs:domain rdfs:Resource ; 
-    rdfs:range rating:Rating ;
-    owl:inverseOf rating:evaluates . 
-
-@prefix statistic: <https://purl.archive.org/git2rdf/v2/git2RDFLab-statistic#> .
-
-platform:hasStatistic a rdf:Property ;
-    rdfs:label "Has Statistic"@en ;
-    rdfs:comment "Links a platform entity (like an Issue or User) to a statistic about it."@en ;
+platform:hasAnalysisResult a rdf:Property ;
+    rdfs:label "Has Analysis Result"@en ;
+    rdfs:comment "Links a platform entity to analysis results about it (measurements, evaluations, ratings, statistics)."@en ;
     rdfs:domain rdfs:Resource ;
-    rdfs:range statistic:Metric ;
-    owl:inverseOf statistic:measuredEntity .
+    rdfs:range analysis:ResultEvent ;
+    owl:equivalentProperty analysis:hasResult .
+
+platform:hasExecution a rdf:Property ;
+    rdfs:label "Has Execution"@en ;
+    rdfs:comment "Links a platform entity to analysis executions that analyzed it."@en ;
+    rdfs:domain rdfs:Resource ;
+    rdfs:range analysis:Execution .

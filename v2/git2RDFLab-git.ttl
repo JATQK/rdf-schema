@@ -20,10 +20,11 @@
   dc:description "The git2RDFLab ontology v2 provides entities found in a git repository, mainly commits, with improved relationships and structure linked to github issues"@en ;
   ns0:preferredNamespacePrefix "git" ;
   ns0:preferredNamespaceUri "https://purl.archive.org/git2rdf/v2/git2RDFLab-git#" ;
-  owl:versionInfo "Version 2.0 - 2025-07-15"@en ;
-  dc:modified "2025-07-15"^^xsd:date ;
+  owl:versionInfo "Version 2.1 - 2025-07-20"@en ;
+  dc:modified "2025-07-20"^^xsd:date ;
   dc:contributor "https://github.com/git2RDFLab" ;
-  owl:priorVersion <https://purl.archive.org/git2rdf/v1/git2RDFLab-git#> .
+  owl:priorVersion <https://purl.archive.org/git2rdf/v1/git2RDFLab-git#> ;
+  owl:imports <https://purl.archive.org/git2rdf/v2/git2RDFLab-analysis#> .
 
 
 #
@@ -475,26 +476,17 @@ git:newLinenumberEnd owl:equivalentProperty git:newLineEnd .
 # ╰──────────────────────────────────────────────────╯
 #
 
-@prefix rating: <https://purl.archive.org/git2rdf/v2/git2RDFLab-rating#> .
+@prefix analysis: <https://purl.archive.org/git2rdf/v2/git2RDFLab-analysis#> .
 
-git:hasEvaluation a rdf:Property ;
-    rdfs:label "Has Evaluation"@en ;
-    rdfs:comment "Links a git entity to structured evaluations about it."@en ;
-    rdfs:domain rdfs:Resource ;  # Any git entity (commit, repository, etc.)
-    rdfs:range rating:Evaluation .
-
-git:hasRating a rdf:Property ;
-    rdfs:label "Has Rating"@en ;
-    rdfs:comment "Links a git entity directly to individual ratings about it."@en ;
+git:hasAnalysisResult a rdf:Property ;
+    rdfs:label "Has Analysis Result"@en ;
+    rdfs:comment "Links a git entity to analysis results about it (measurements, evaluations, ratings, statistics)."@en ;
     rdfs:domain rdfs:Resource ;
-    rdfs:range rating:Rating ;
-    owl:inverseOf rating:evaluates .
+    rdfs:range analysis:ResultEvent ;
+    owl:equivalentProperty analysis:hasResult .
 
-@prefix statistic: <https://purl.archive.org/git2rdf/v2/git2RDFLab-statistic#> .
-
-git:hasStatistic a rdf:Property ;
-    rdfs:label "Has Statistic"@en ;
-    rdfs:comment "Links a git entity (like a Commit or Repository) to a statistic about it."@en ;
+git:hasExecution a rdf:Property ;
+    rdfs:label "Has Execution"@en ;
+    rdfs:comment "Links a git entity to analysis executions that analyzed it."@en ;
     rdfs:domain rdfs:Resource ;
-    rdfs:range statistic:Metric ;
-    owl:inverseOf statistic:measuredEntity .
+    rdfs:range analysis:Execution .

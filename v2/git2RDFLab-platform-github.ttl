@@ -21,12 +21,13 @@
   dc:description "The git2RDFLab Github platform ontology v2 provides Github-specific entities including repositories, issues, pull requests, and workflows"@en ;
   ns0:preferredNamespacePrefix "github" ;
   ns0:preferredNamespaceUri "https://purl.archive.org/git2rdf/v2/git2RDFLab-platform-github#" ;
-  owl:versionInfo "Version 2.0 - 2025-07-10"@en ;
-  dc:modified "2025-07-10"^^xsd:date ;
+  owl:versionInfo "Version 2.1 - 2025-07-20"@en ;
+  dc:modified "2025-07-20"^^xsd:date ;
   dc:contributor "https://github.com/git2RDFLab" ;
   owl:priorVersion <https://purl.archive.org/git2rdf/v1/git2RDFLab-platform-github#> ;
   owl:imports <https://purl.archive.org/git2rdf/v2/git2RDFLab-git#> ;
-  owl:imports <https://purl.archive.org/git2rdf/v2/git2RDFLab-platform#> .
+  owl:imports <https://purl.archive.org/git2rdf/v2/git2RDFLab-platform#> ;
+  owl:imports <https://purl.archive.org/git2rdf/v2/git2RDFLab-analysis#> .
 
 #
 # ╭──────────────────────────────────────────────────╮
@@ -192,11 +193,6 @@ github:GithubComment a rdfs:Class ;
     rdfs:comment "Represents a comment on Github (issues, pull requests, etc.)."@en .
 
 # GitHub Comment properties
-github:commentUrl a rdf:Property ;
-    rdfs:label "Comment URL"@en ;
-    rdfs:comment "The Github web URL for this comment."@en ;
-    rdfs:domain github:GithubComment ;
-    rdfs:range xsd:anyURI .
 
 github:parentComment a rdf:Property ;
     rdfs:label "Parent Comment"@en ;
@@ -535,44 +531,23 @@ github:changesRequested a github:ReviewState ;
 # ╰──────────────────────────────────────────────────╯
 #
 
-@prefix rating: <https://purl.archive.org/git2rdf/v2/git2RDFLab-rating#> .
-
-github:hasRating a rdf:Property ;
-    rdfs:label "Has Rating"@en ;
-    rdfs:comment "Links a Github entity (like an Issue, PR, or Commit) to a rating about it."@en ;
-    # The domain is any Github entity that can be rated.
-    # We leave the domain open here for flexibility, but it will typically be
-    # applied to GithubIssue, GithubPullRequest, GitCommit, etc.
-    rdfs:range rating:Rating ;
-    owl:inverseOf rating:ratedEntity .
-
-
 #
 # ╭──────────────────────────────────────────────────╮
-# │ Linking Properties                               │
+# │ Analysis Integration                             │
 # ╰──────────────────────────────────────────────────╯
 #
 
-@prefix rating: <https://purl.archive.org/git2rdf/v2/git2RDFLab-rating#> .
+@prefix analysis: <https://purl.archive.org/git2rdf/v2/git2RDFLab-analysis#> .
 
-github:hasEvaluation a rdf:Property ;
-    rdfs:label "Has Evaluation"@en ;
-    rdfs:comment "Links a Github entity to structured evaluations about it."@en ;
+github:hasAnalysisResult a rdf:Property ;
+    rdfs:label "Has Analysis Result"@en ;
+    rdfs:comment "Links a Github entity to analysis results about it (measurements, evaluations, ratings, statistics)."@en ;
     rdfs:domain rdfs:Resource ;
-    rdfs:range rating:Evaluation .
+    rdfs:range analysis:ResultEvent ;
+    owl:equivalentProperty analysis:hasResult .
 
-github:hasRating a rdf:Property ;
-    rdfs:label "Has Rating"@en ;
-    rdfs:comment "Links a Github entity to individual ratings about it."@en ;
+github:hasExecution a rdf:Property ;
+    rdfs:label "Has Execution"@en ;
+    rdfs:comment "Links a Github entity to analysis executions that analyzed it."@en ;
     rdfs:domain rdfs:Resource ;
-    rdfs:range rating:Rating ;
-    owl:inverseOf rating:evaluates .
-
-@prefix statistic: <https://purl.archive.org/git2rdf/v2/git2RDFLab-statistic#> .
-
-github:hasStatistic a rdf:Property ;
-    rdfs:label "Has Statistic"@en ;
-    rdfs:comment "Links a Github entity (like an Issue, PR, or Commit) to a statistic about it."@en ;
-    rdfs:domain rdfs:Resource ;
-    rdfs:range statistic:Statistic ;
-    owl:inverseOf statistic:measuredEntity .
+    rdfs:range analysis:Execution .
