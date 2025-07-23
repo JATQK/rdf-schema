@@ -5,6 +5,13 @@
 @prefix git: <https://purl.archive.org/git2rdf/v2/git2RDFLab-git#> .
 @prefix platform: <https://purl.archive.org/git2rdf/v2/git2RDFLab-platform#> .
 
+# Ontology Declaration
+<https://purl.archive.org/git2rdf/v2/git2RDFLab-platform#> a owl:Ontology ;
+    owl:versionInfo "2.0" ;
+    owl:imports <https://purl.archive.org/git2rdf/v2/git2RDFLab-git#> ;
+    rdfs:label "Git2RDF Platform Ontology"@en ;
+    rdfs:comment "Abstract platform concepts for cross-platform development tools including tickets, workflows, and CI/CD"@en .
+
 
 #
 # ╭──────────────────────────────────────────────────╮
@@ -137,15 +144,39 @@ platform:assignee a rdf:Property ;
     rdfs:domain platform:Ticket ;
     rdfs:range platform:Person .
 
+# Generalized temporal properties (PROV-O inspired)
+platform:generatedAtTime a rdf:Property ;
+    rdfs:label "Generated At Time"@en ;
+    rdfs:comment "When the resource was created/generated"@en ;
+    rdfs:range xsd:dateTime .
+
+platform:invalidatedAtTime a rdf:Property ;
+    rdfs:label "Invalidated At Time"@en ;
+    rdfs:comment "When the resource was invalidated/ended"@en ;
+    rdfs:range xsd:dateTime .
+
+platform:startedAtTime a rdf:Property ;
+    rdfs:label "Started At Time"@en ;
+    rdfs:comment "When the activity/process started"@en ;
+    rdfs:range xsd:dateTime .
+
+platform:endedAtTime a rdf:Property ;
+    rdfs:label "Ended At Time"@en ;
+    rdfs:comment "When the activity/process ended"@en ;
+    rdfs:range xsd:dateTime .
+
+# Legacy aliases for backward compatibility
 platform:createdAt a rdf:Property ;
+    owl:equivalentProperty platform:generatedAtTime ;
     rdfs:label "Created At"@en ;
-    rdfs:comment "When the ticket was created"@en ;
+    rdfs:comment "When the ticket was created (alias for generatedAtTime)"@en ;
     rdfs:domain platform:Ticket ;
     rdfs:range xsd:dateTime .
 
 platform:updatedAt a rdf:Property ;
+    rdfs:subPropertyOf platform:generatedAtTime ;
     rdfs:label "Updated At"@en ;
-    rdfs:comment "When the ticket was last updated"@en ;
+    rdfs:comment "When the ticket was last updated (represents the most recent generatedAtTime for modification events)"@en ;
     rdfs:domain platform:Ticket ;
     rdfs:range xsd:dateTime .
 
@@ -168,17 +199,17 @@ platform:mergedAt a rdf:Property ;
     rdfs:domain platform:Ticket ;
     rdfs:range xsd:dateTime .
 
-platform:mergedBy a rdf:Property ;
-    rdfs:label "Merged By"@en ;
-    rdfs:comment "Person who merged the pull request"@en ;
-    rdfs:domain platform:Ticket ;
-    rdfs:range platform:Person .
-
 platform:mergeCommitSha a rdf:Property ;
     rdfs:label "Merge Commit SHA"@en ;
     rdfs:comment "SHA of the merge commit"@en ;
     rdfs:domain platform:Ticket ;
     rdfs:range xsd:string .
+
+platform:mergedBy a rdf:Property ;
+    rdfs:label "Merged By"@en ;
+    rdfs:comment "Person who merged the pull request"@en ;
+    rdfs:domain platform:Ticket ;
+    rdfs:range platform:Person .
 
 # Universal ticket identifiers and URLs
 platform:url a rdf:Property ;
@@ -217,18 +248,6 @@ platform:commentedAt a rdf:Property ;
     rdfs:comment "When the comment was made"@en ;
     rdfs:domain platform:Comment ;
     rdfs:range xsd:dateTime .
-
-platform:isRootComment a rdf:Property ;
-    rdfs:label "Is Root Comment"@en ;
-    rdfs:comment "Whether this is a root-level comment"@en ;
-    rdfs:domain platform:Comment ;
-    rdfs:range xsd:boolean .
-
-platform:reactionCount a rdf:Property ;
-    rdfs:label "Reaction Count"@en ;
-    rdfs:comment "Number of reactions on the comment"@en ;
-    rdfs:domain platform:Comment ;
-    rdfs:range xsd:nonNegativeInteger .
 
 # Label properties (inherited by platform-specific labels)
 platform:labelName a rdf:Property ;
@@ -368,12 +387,6 @@ platform:executionId a rdf:Property ;
     rdfs:domain platform:WorkflowExecution ;
     rdfs:range xsd:string .
 
-platform:executionNumber a rdf:Property ;
-    rdfs:label "Execution Number"@en ;
-    rdfs:comment "Sequential execution number"@en ;
-    rdfs:domain platform:WorkflowExecution ;
-    rdfs:range xsd:nonNegativeInteger .
-
 platform:executionStatus a rdf:Property ;
     rdfs:label "Execution Status"@en ;
     rdfs:comment "Current status of the execution"@en ;
@@ -428,6 +441,13 @@ platform:hasLabel a rdf:Property ;
     rdfs:domain platform:Ticket ;
     rdfs:range platform:Label .
 
+platform:labelOf a rdf:Property ;
+    owl:inverseOf platform:hasLabel ;
+    rdfs:label "Label Of"@en ;
+    rdfs:comment "This label is used by tickets"@en ;
+    rdfs:domain platform:Label ;
+    rdfs:range platform:Ticket .
+
 platform:hasMilestone a rdf:Property ;
     rdfs:label "Has Milestone"@en ;
     rdfs:comment "This ticket belongs to a milestone"@en ;
@@ -439,6 +459,13 @@ platform:hasComment a rdf:Property ;
     rdfs:comment "This ticket has comments"@en ;
     rdfs:domain platform:Ticket ;
     rdfs:range platform:Comment .
+
+platform:commentOn a rdf:Property ;
+    owl:inverseOf platform:hasComment ;
+    rdfs:label "Comment On"@en ;
+    rdfs:comment "This comment is on a ticket"@en ;
+    rdfs:domain platform:Comment ;
+    rdfs:range platform:Ticket .
 
 platform:hasJob a rdf:Property ;
     rdfs:label "Has Job"@en ;
@@ -452,24 +479,34 @@ platform:hasJob a rdf:Property ;
 # ╰──────────────────────────────────────────────────╯
 #
 
+# Base property for all attachments and analysis
+platform:hasAttachment a rdf:Property ;
+    rdfs:label "Has Attachment"@en ;
+    rdfs:comment "This resource has attached analysis or evaluation data"@en .
+
 # These allow platform entities to have ratings, evaluations, metrics, and analysis
 platform:hasRating a rdf:Property ;
+    rdfs:subPropertyOf platform:hasAttachment ;
     rdfs:label "Has Rating"@en ;
     rdfs:comment "This resource has ratings"@en .
 
 platform:hasEvaluation a rdf:Property ;
+    rdfs:subPropertyOf platform:hasAttachment ;
     rdfs:label "Has Evaluation"@en ;
     rdfs:comment "This resource has evaluations"@en .
 
 platform:hasMetrics a rdf:Property ;
+    rdfs:subPropertyOf platform:hasAttachment ;
     rdfs:label "Has Metrics"@en ;
     rdfs:comment "This resource has metrics"@en .
 
 platform:hasAnalysisResult a rdf:Property ;
+    rdfs:subPropertyOf platform:hasAttachment ;
     rdfs:label "Has Analysis Result"@en ;
     rdfs:comment "This resource has analysis results"@en .
 
 platform:hasExecution a rdf:Property ;
+    rdfs:subPropertyOf platform:hasAttachment ;
     rdfs:label "Has Execution"@en ;
     rdfs:comment "This resource has analysis executions"@en .
 
@@ -488,20 +525,25 @@ platform:MilestoneState a rdfs:Class ;
     rdfs:label "Milestone State"@en ;
     rdfs:comment "Possible states for milestones"@en .
 
-platform:JobStatus a rdfs:Class ;
-    rdfs:label "Job Status"@en ;
-    rdfs:comment "Possible statuses for workflow jobs"@en .
-
-platform:JobConclusion a rdfs:Class ;
-    rdfs:label "Job Conclusion"@en ;
-    rdfs:comment "Possible conclusions for workflow jobs"@en .
-
+# Unified execution state classes (consolidating Job* and Execution* hierarchies)
 platform:ExecutionStatus a rdfs:Class ;
     rdfs:label "Execution Status"@en ;
-    rdfs:comment "Possible statuses for workflow executions"@en .
+    rdfs:comment "Possible statuses for any execution (jobs, workflows, processes)"@en .
 
 platform:ExecutionConclusion a rdfs:Class ;
     rdfs:label "Execution Conclusion"@en ;
+    rdfs:comment "Possible final conclusions for any execution"@en .
+
+# Legacy aliases for backward compatibility
+platform:JobStatus a rdfs:Class ;
+    owl:equivalentClass platform:ExecutionStatus ;
+    rdfs:label "Job Status"@en ;
+    rdfs:comment "Possible statuses for workflow jobs (alias for ExecutionStatus)"@en .
+
+platform:JobConclusion a rdfs:Class ;
+    owl:equivalentClass platform:ExecutionConclusion ;
+    rdfs:label "Job Conclusion"@en ;
+    rdfs:comment "Possible conclusions for workflow jobs (alias for ExecutionConclusion)"@en .
     rdfs:comment "Possible conclusions for workflow executions"@en .
 
 #
@@ -542,17 +584,18 @@ platform:milestone_closed a platform:MilestoneState ;
 # ╰──────────────────────────────────────────────────╯
 #
 
-platform:queued a platform:JobStatus ;
+# Unified execution status values (replacing separate Job/Execution hierarchies)
+platform:queued a platform:ExecutionStatus ;
     rdfs:label "Queued"@en ;
-    rdfs:comment "Job is queued"@en .
+    rdfs:comment "Execution is queued"@en .
 
-platform:in_progress a platform:JobStatus ;
+platform:in_progress a platform:ExecutionStatus ;
     rdfs:label "In Progress"@en ;
-    rdfs:comment "Job is in progress"@en .
+    rdfs:comment "Execution is in progress"@en .
 
-platform:completed a platform:JobStatus ;
+platform:completed a platform:ExecutionStatus ;
     rdfs:label "Completed"@en ;
-    rdfs:comment "Job is completed"@en .
+    rdfs:comment "Execution is completed"@en .
 
 #
 # ╭──────────────────────────────────────────────────╮
@@ -560,21 +603,22 @@ platform:completed a platform:JobStatus ;
 # ╰──────────────────────────────────────────────────╯
 #
 
-platform:success a platform:JobConclusion ;
+# Unified execution conclusion values
+platform:success a platform:ExecutionConclusion ;
     rdfs:label "Success"@en ;
-    rdfs:comment "Job completed successfully"@en .
+    rdfs:comment "Execution completed successfully"@en .
 
-platform:failure a platform:JobConclusion ;
+platform:failure a platform:ExecutionConclusion ;
     rdfs:label "Failure"@en ;
-    rdfs:comment "Job failed"@en .
+    rdfs:comment "Execution failed"@en .
 
-platform:cancelled a platform:JobConclusion ;
+platform:cancelled a platform:ExecutionConclusion ;
     rdfs:label "Cancelled"@en ;
-    rdfs:comment "Job was cancelled"@en .
+    rdfs:comment "Execution was cancelled"@en .
 
-platform:skipped a platform:JobConclusion ;
+platform:skipped a platform:ExecutionConclusion ;
     rdfs:label "Skipped"@en ;
-    rdfs:comment "Job was skipped"@en .
+    rdfs:comment "Execution was skipped"@en .
 
 #
 # ╭──────────────────────────────────────────────────╮
@@ -590,14 +634,6 @@ platform:running a platform:ExecutionStatus ;
     rdfs:label "Running"@en ;
     rdfs:comment "Execution is running"@en .
 
-platform:completed a platform:ExecutionStatus ;
-    rdfs:label "Completed"@en ;
-    rdfs:comment "Execution is completed"@en .
-
-platform:queued a platform:ExecutionStatus ;
-    rdfs:label "Queued"@en ;
-    rdfs:comment "Execution is queued"@en .
-
 platform:waiting a platform:ExecutionStatus ;
     rdfs:label "Waiting"@en ;
     rdfs:comment "Execution is waiting"@en .
@@ -607,22 +643,6 @@ platform:waiting a platform:ExecutionStatus ;
 # │ Execution Conclusion Enumeration Values          │
 # ╰──────────────────────────────────────────────────╯
 #
-
-platform:execution_success a platform:ExecutionConclusion ;
-    rdfs:label "Success"@en ;
-    rdfs:comment "Execution completed successfully"@en .
-
-platform:execution_failure a platform:ExecutionConclusion ;
-    rdfs:label "Failure"@en ;
-    rdfs:comment "Execution failed"@en .
-
-platform:execution_cancelled a platform:ExecutionConclusion ;
-    rdfs:label "Cancelled"@en ;
-    rdfs:comment "Execution was cancelled"@en .
-
-platform:execution_skipped a platform:ExecutionConclusion ;
-    rdfs:label "Skipped"@en ;
-    rdfs:comment "Execution was skipped"@en .
 
 platform:timed_out a platform:ExecutionConclusion ;
     rdfs:label "Timed Out"@en ;
