@@ -2,8 +2,13 @@
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
-@prefix spdx: <http://spdx.org/rdf/terms#> .
 @prefix git: <https://purl.archive.org/git2rdf/v2/git2RDFLab-git#> .
+
+# Ontology Declaration
+<https://purl.archive.org/git2rdf/v2/git2RDFLab-git#> a owl:Ontology ;
+    owl:versionInfo "2.0" ;
+    rdfs:label "Git2RDF Git Ontology"@en ;
+    rdfs:comment "Core Git concepts including repositories, commits, branches, and version control operations"@en .
 
 #
 # ╭──────────────────────────────────────────────────╮
@@ -60,6 +65,10 @@ git:BranchSnapshotLineEntry a rdfs:Class ;
 git:EditType a rdfs:Class ;
     rdfs:label "Edit Type"@en ;
     rdfs:comment "The type of edit operation"@en .
+
+git:ChangeType a rdfs:Class ;
+    rdfs:label "Change Type"@en ;
+    rdfs:comment "The type of file change operation"@en .
 
 #
 # ╭──────────────────────────────────────────────────╮
@@ -169,6 +178,13 @@ git:hasParent a rdf:Property ;
     rdfs:domain git:GitCommit ;
     rdfs:range git:GitCommit .
 
+git:isParentOf a rdf:Property ;
+    owl:inverseOf git:hasParent ;
+    rdfs:label "Is Parent Of"@en ;
+    rdfs:comment "This commit is a parent of another commit"@en ;
+    rdfs:domain git:GitCommit ;
+    rdfs:range git:GitCommit .
+
 git:inBranch a rdf:Property ;
     rdfs:label "In Branch"@en ;
     rdfs:comment "This commit is in the specified branch"@en ;
@@ -181,6 +197,13 @@ git:hasTag a rdf:Property ;
     rdfs:domain git:GitCommit ;
     rdfs:range git:GitTag .
 
+git:tagOf a rdf:Property ;
+    owl:inverseOf git:hasTag ;
+    rdfs:label "Tag Of"@en ;
+    rdfs:comment "This tag belongs to a commit"@en ;
+    rdfs:domain git:GitTag ;
+    rdfs:range git:GitCommit .
+
 git:hasDiffEntry a rdf:Property ;
     rdfs:label "Has Diff Entry"@en ;
     rdfs:comment "This commit has file changes"@en ;
@@ -192,12 +215,6 @@ git:isMergeCommit a rdf:Property ;
     rdfs:comment "Whether this is a merge commit"@en ;
     rdfs:domain git:GitCommit ;
     rdfs:range xsd:boolean .
-
-git:commitBranchName a rdf:Property ;
-    rdfs:label "Commit Branch Name"@en ;
-    rdfs:comment "The branch name associated with this commit"@en ;
-    rdfs:domain git:GitCommit ;
-    rdfs:range xsd:string .
 
 #
 # ╭──────────────────────────────────────────────────╮
@@ -239,7 +256,7 @@ git:submoduleHash a rdf:Property ;
     rdfs:label "Submodule Hash"@en ;
     rdfs:comment "The commit hash of the submodule"@en ;
     rdfs:domain git:GitSubmodule ;
-    rdfs:range spdx:CheckSum .
+    rdfs:range xsd:string .
 
 git:submoduleCommitUri a rdf:Property ;
     rdfs:label "Submodule Commit URI"@en ;
@@ -262,8 +279,8 @@ git:submoduleRepositoryUri a rdf:Property ;
 git:changeType a rdf:Property ;
     rdfs:label "Change Type"@en ;
     rdfs:comment "The type of change in this diff"@en ;
-    rdfs:domain [ owl:unionOf ( git:CommitDiffEntry git:CommitDiffEdit ) ] ;
-    rdfs:range xsd:string .
+    rdfs:domain git:CommitDiffEntry ;
+    rdfs:range git:ChangeType .
 
 git:oldFileName a rdf:Property ;
     rdfs:label "Old File Name"@en ;
@@ -347,7 +364,7 @@ git:lineCommitHash a rdf:Property ;
     rdfs:label "Line Commit Hash"@en ;
     rdfs:comment "The commit hash for this line"@en ;
     rdfs:domain git:BranchSnapshotLineEntry ;
-    rdfs:range spdx:CheckSum .
+    rdfs:range xsd:string .
 
 git:lineNumber a rdf:Property ;
     rdfs:label "Line Number"@en ;
@@ -355,14 +372,14 @@ git:lineNumber a rdf:Property ;
     rdfs:domain git:BranchSnapshotLineEntry ;
     rdfs:range xsd:nonNegativeInteger .
 
-git:branchSnapshotLinenumberBegin a rdf:Property ;
-    rdfs:label "Branch Snapshot Line Number Begin"@en ;
+git:lineBegin a rdf:Property ;
+    rdfs:label "Line Begin"@en ;
     rdfs:comment "Beginning line number in snapshot"@en ;
     rdfs:domain git:BranchSnapshotLineEntry ;
     rdfs:range xsd:nonNegativeInteger .
 
-git:branchSnapshotLinenumberEnd a rdf:Property ;
-    rdfs:label "Branch Snapshot Line Number End"@en ;
+git:lineEnd a rdf:Property ;
+    rdfs:label "Line End"@en ;
     rdfs:comment "Ending line number in snapshot"@en ;
     rdfs:domain git:BranchSnapshotLineEntry ;
     rdfs:range xsd:nonNegativeInteger .
@@ -373,30 +390,32 @@ git:branchSnapshotLinenumberEnd a rdf:Property ;
 # ╰──────────────────────────────────────────────────╯
 #
 
-git:add a rdfs:Resource ;
+# Change Type Instances
+git:add a git:ChangeType ;
     rdfs:label "Add"@en ;
     rdfs:comment "File was added"@en .
 
-git:delete a rdfs:Resource ;
+git:delete a git:ChangeType ;
     rdfs:label "Delete"@en ;
     rdfs:comment "File was deleted"@en .
 
-git:modify a rdfs:Resource ;
+git:modify a git:ChangeType ;
     rdfs:label "Modify"@en ;
     rdfs:comment "File was modified"@en .
 
-git:rename a rdfs:Resource ;
+git:rename a git:ChangeType ;
     rdfs:label "Rename"@en ;
     rdfs:comment "File was renamed"@en .
 
-git:copy a rdfs:Resource ;
+git:copy a git:ChangeType ;
     rdfs:label "Copy"@en ;
     rdfs:comment "File was copied"@en .
 
-git:insert a rdfs:Resource ;
+# Edit Type Instances  
+git:insert a git:EditType ;
     rdfs:label "Insert"@en ;
     rdfs:comment "Lines were inserted"@en .
 
-git:replace a rdfs:Resource ;
+git:replace a git:EditType ;
     rdfs:label "Replace"@en ;
     rdfs:comment "Lines were replaced"@en .

@@ -6,6 +6,14 @@
 @prefix platform: <https://purl.archive.org/git2rdf/v2/git2RDFLab-platform#> .
 @prefix github: <https://purl.archive.org/git2rdf/v2/git2RDFLab-platform-github#> .
 
+# Ontology Declaration
+<https://purl.archive.org/git2rdf/v2/git2RDFLab-platform-github#> a owl:Ontology ;
+    owl:versionInfo "2.0" ;
+    owl:imports <https://purl.archive.org/git2rdf/v2/git2RDFLab-platform#> ,
+                <https://purl.archive.org/git2rdf/v2/git2RDFLab-git#> ;
+    rdfs:label "Git2RDF GitHub Platform Ontology"@en ;
+    rdfs:comment "GitHub-specific implementations of platform concepts including issues, pull requests, workflows, and repositories"@en .
+
 #
 # ╭──────────────────────────────────────────────────╮
 # │ GitHub Classes                                   │
@@ -49,6 +57,11 @@ github:nodeId a rdf:Property ;
     rdfs:domain github:GithubIssue ;
     rdfs:range xsd:string .
 
+github:commitId a rdf:Property ;
+    rdfs:label "Commit ID"@en ;
+    rdfs:comment "GitHub commit SHA identifier"@en ;
+    rdfs:range xsd:string .
+
 github:draft a rdf:Property ;
     rdfs:label "Draft"@en ;
     rdfs:comment "Whether the pull request is in draft mode"@en ;
@@ -82,9 +95,11 @@ github:GithubRepository a rdfs:Class ;
     rdfs:label "GitHub Repository"@en .
 
 github:GithubLabel a rdfs:Class ;
+    rdfs:subClassOf platform:Label ;
     rdfs:label "GitHub Label"@en .
 
 github:GithubMilestone a rdfs:Class ;
+    rdfs:subClassOf platform:Milestone ;
     rdfs:label "GitHub Milestone"@en .
 
 github:GithubReview a rdfs:Class ;
@@ -102,10 +117,6 @@ github:WorkflowJob a rdfs:Class ;
 github:WorkflowStep a rdfs:Class ;
     rdfs:label "GitHub Workflow Step"@en .
 
-github:GithubRelease a rdfs:Class ;
-    rdfs:subClassOf git:GitTag ;
-    rdfs:label "GitHub Release"@en ;
-    rdfs:comment "A GitHub release, which extends git tags with additional metadata"@en .
 
 #
 # ╭──────────────────────────────────────────────────╮
@@ -131,11 +142,6 @@ github:gitAuthorEmail a rdf:Property ;
 # Note: Repository properties (repositoryName, repositoryOwner, repositoryDescription) 
 # are now inherited from platform:Repository base class
 
-github:isPrivate a rdf:Property ;
-    rdfs:label "Is Private"@en ;
-    rdfs:comment "Whether the repository is private"@en ;
-    rdfs:domain github:GithubRepository ;
-    rdfs:range xsd:boolean .
 
 # GitHub Pull Request State Enum (GitHub API compliant)
 github:PullRequestState a rdfs:Class ;
@@ -155,24 +161,6 @@ github:pr_draft a github:PullRequestState ;
     rdfs:label "Draft"@en ;
     rdfs:comment "Pull request is in draft state"@en .
 
-# GitHub-specific metrics (cannot be generalized)
-github:forksCount a rdf:Property ;
-    rdfs:label "Forks Count"@en ;
-    rdfs:comment "Number of forks"@en ;
-    rdfs:domain github:GithubRepository ;
-    rdfs:range xsd:nonNegativeInteger .
-
-github:starsCount a rdf:Property ;
-    rdfs:label "Stars Count"@en ;
-    rdfs:comment "Number of stars"@en ;
-    rdfs:domain github:GithubRepository ;
-    rdfs:range xsd:nonNegativeInteger .
-
-github:watchersCount a rdf:Property ;
-    rdfs:label "Watchers Count"@en ;
-    rdfs:comment "Number of watchers"@en ;
-    rdfs:domain github:GithubRepository ;
-    rdfs:range xsd:nonNegativeInteger .
 
 github:defaultBranch a rdf:Property ;
     rdfs:label "Default Branch"@en ;
@@ -230,23 +218,7 @@ github:commentOf a rdf:Property ;
 # ╰──────────────────────────────────────────────────╯
 #
 
-github:labelName a rdf:Property ;
-    rdfs:label "Label Name"@en ;
-    rdfs:comment "Name of the label"@en ;
-    rdfs:domain github:GithubLabel ;
-    rdfs:range xsd:string .
-
-github:labelColor a rdf:Property ;
-    rdfs:label "Label Color"@en ;
-    rdfs:comment "Color of the label"@en ;
-    rdfs:domain github:GithubLabel ;
-    rdfs:range xsd:string .
-
-github:labelDescription a rdf:Property ;
-    rdfs:label "Label Description"@en ;
-    rdfs:comment "Description of the label"@en ;
-    rdfs:domain github:GithubLabel ;
-    rdfs:range xsd:string .
+# GitHub-specific no specifc label properties - use platform:labelName, platform:labelColor, platform:labelDescription instead
 
 #
 # ╭──────────────────────────────────────────────────╮
@@ -254,29 +226,7 @@ github:labelDescription a rdf:Property ;
 # ╰──────────────────────────────────────────────────╯
 #
 
-github:milestoneTitle a rdf:Property ;
-    rdfs:label "Milestone Title"@en ;
-    rdfs:comment "Title of the milestone"@en ;
-    rdfs:domain github:GithubMilestone ;
-    rdfs:range xsd:string .
-
-github:milestoneDescription a rdf:Property ;
-    rdfs:label "Milestone Description"@en ;
-    rdfs:comment "Description of the milestone"@en ;
-    rdfs:domain github:GithubMilestone ;
-    rdfs:range xsd:string .
-
-github:milestoneDueDate a rdf:Property ;
-    rdfs:label "Milestone Due Date"@en ;
-    rdfs:comment "Due date of the milestone"@en ;
-    rdfs:domain github:GithubMilestone ;
-    rdfs:range xsd:dateTime .
-
-github:milestoneState a rdf:Property ;
-    rdfs:label "Milestone State"@en ;
-    rdfs:comment "State of the milestone"@en ;
-    rdfs:domain github:GithubMilestone ;
-    rdfs:range platform:MilestoneState .
+# GitHub-specific no specifc milestone properties - use platform:milestoneTitle, platform:milestoneDescription, platform:milestoneDueDate, platform:milestoneState instead
 
 #
 # ╭──────────────────────────────────────────────────╮
@@ -297,6 +247,7 @@ github:reviewBody a rdf:Property ;
     rdfs:range xsd:string .
 
 github:reviewState a rdf:Property ;
+    rdfs:subPropertyOf platform:state ;
     rdfs:label "Review State"@en ;
     rdfs:comment "State of the review"@en ;
     rdfs:domain github:GithubReview ;
@@ -307,12 +258,6 @@ github:reviewAuthor a rdf:Property ;
     rdfs:comment "Author of the review"@en ;
     rdfs:domain github:GithubReview ;
     rdfs:range github:GithubUser .
-
-github:reviewCommitSha a rdf:Property ;
-    rdfs:label "Review Commit SHA"@en ;
-    rdfs:comment "Commit SHA being reviewed"@en ;
-    rdfs:domain github:GithubReview ;
-    rdfs:range xsd:string .
 
 github:submittedAt a rdf:Property ;
     rdfs:label "Submitted At"@en ;
@@ -345,6 +290,7 @@ github:reactionUser a rdf:Property ;
     rdfs:range github:GithubUser .
 
 github:reactionCreatedAt a rdf:Property ;
+    rdfs:subPropertyOf platform:generatedAtTime ;
     rdfs:label "Reaction Created At"@en ;
     rdfs:comment "When the reaction was created"@en ;
     rdfs:domain github:GithubReaction ;
@@ -362,11 +308,13 @@ github:workflowRunId a rdf:Property ;
     rdfs:domain github:WorkflowRun ;
     rdfs:range xsd:long .
 
-github:workflowRunNumber a rdf:Property ;
-    rdfs:label "Workflow Run Number"@en ;
-    rdfs:comment "Run number for the workflow"@en ;
-    rdfs:domain github:WorkflowRun ;
-    rdfs:range xsd:long .
+# DEPRECATED: Redundant with workflowRunId (GitHub run numbers are typically sequential/derivable)
+# github:workflowRunNumber a rdf:Property ;
+#     owl:deprecated true ;
+#     rdfs:label "Workflow Run Number"@en ;
+#     rdfs:comment "DEPRECATED: Run number for the workflow (use workflowRunId instead - numbers are typically sequential and derivable)"@en ;
+#     rdfs:domain github:WorkflowRun ;
+#     rdfs:range xsd:long .
 
 github:workflowName a rdf:Property ;
     rdfs:label "Workflow Name"@en ;
@@ -375,22 +323,24 @@ github:workflowName a rdf:Property ;
     rdfs:range xsd:string .
 
 github:workflowStatus a rdf:Property ;
+    rdfs:subPropertyOf platform:executionStatus ;
     rdfs:label "Workflow Status"@en ;
     rdfs:comment "Current status of the workflow"@en ;
     rdfs:domain github:WorkflowRun ;
-    rdfs:range xsd:string .
+    rdfs:range github:WorkflowStatus .
 
 github:workflowConclusion a rdf:Property ;
+    rdfs:subPropertyOf platform:executionConclusion ;
     rdfs:label "Workflow Conclusion"@en ;
     rdfs:comment "Final conclusion of the workflow"@en ;
     rdfs:domain github:WorkflowRun ;
-    rdfs:range xsd:string .
+    rdfs:range github:WorkflowConclusion .
 
 github:workflowEvent a rdf:Property ;
     rdfs:label "Workflow Event"@en ;
     rdfs:comment "Event that triggered the workflow"@en ;
     rdfs:domain github:WorkflowRun ;
-    rdfs:range xsd:string .
+    rdfs:range github:WorkflowEvent .
 
 github:workflowCommitSha a rdf:Property ;
     rdfs:label "Workflow Commit SHA"@en ;
@@ -399,12 +349,14 @@ github:workflowCommitSha a rdf:Property ;
     rdfs:range xsd:string .
 
 github:workflowCreatedAt a rdf:Property ;
+    rdfs:subPropertyOf platform:generatedAtTime ;
     rdfs:label "Workflow Created At"@en ;
     rdfs:comment "When the workflow was created"@en ;
     rdfs:domain github:WorkflowRun ;
     rdfs:range xsd:dateTime .
 
 github:workflowUpdatedAt a rdf:Property ;
+    rdfs:subPropertyOf platform:invalidatedAtTime ;
     rdfs:label "Workflow Updated At"@en ;
     rdfs:comment "When the workflow was last updated"@en ;
     rdfs:domain github:WorkflowRun ;
@@ -441,15 +393,30 @@ github:stepNumber a rdf:Property ;
     rdfs:range xsd:integer .
 
 github:stepStartedAt a rdf:Property ;
+    rdfs:subPropertyOf platform:startedAtTime ;
     rdfs:label "Step Started At"@en ;
     rdfs:comment "When the step started"@en ;
     rdfs:domain github:WorkflowStep ;
     rdfs:range xsd:dateTime .
 
 github:stepCompletedAt a rdf:Property ;
+    rdfs:subPropertyOf platform:endedAtTime ;
     rdfs:label "Step Completed At"@en ;
     rdfs:comment "When the step completed"@en ;
     rdfs:domain github:WorkflowStep ;
+    rdfs:range xsd:dateTime .
+
+# Missing properties referenced in shapes (adding generalized versions)
+github:startedAt a rdf:Property ;
+    rdfs:subPropertyOf platform:startedAtTime ;
+    rdfs:label "Started At"@en ;
+    rdfs:comment "When the execution started"@en ;
+    rdfs:range xsd:dateTime .
+
+github:completedAt a rdf:Property ;
+    rdfs:subPropertyOf platform:endedAtTime ;
+    rdfs:label "Completed At"@en ;
+    rdfs:comment "When the execution completed"@en ;
     rdfs:range xsd:dateTime .
 
 github:stepUrl a rdf:Property ;
@@ -458,24 +425,6 @@ github:stepUrl a rdf:Property ;
     rdfs:domain github:WorkflowStep ;
     rdfs:range xsd:anyURI .
 
-# Release Properties
-github:releaseAuthor a rdf:Property ;
-    rdfs:label "Release Author"@en ;
-    rdfs:comment "User who created the release"@en ;
-    rdfs:domain github:GithubRelease ;
-    rdfs:range github:GithubUser .
-
-github:isDraft a rdf:Property ;
-    rdfs:label "Is Draft"@en ;
-    rdfs:comment "Whether the release is a draft"@en ;
-    rdfs:domain github:GithubRelease ;
-    rdfs:range xsd:boolean .
-
-github:isPrerelease a rdf:Property ;
-    rdfs:label "Is Prerelease"@en ;
-    rdfs:comment "Whether the release is a prerelease"@en ;
-    rdfs:domain github:GithubRelease ;
-    rdfs:range xsd:boolean .
 
 #
 # ╭──────────────────────────────────────────────────╮
@@ -483,20 +432,11 @@ github:isPrerelease a rdf:Property ;
 # ╰──────────────────────────────────────────────────╯
 #
 
-github:comment a rdf:Property ;
-    rdfs:label "Comment"@en ;
-    rdfs:domain github:GithubIssue ;
-    rdfs:range github:GithubComment .
+# Use platform:hasComment instead of github:comment for consistency
 
-github:hasLabel a rdf:Property ;
-    rdfs:label "Has Label"@en ;
-    rdfs:domain github:GithubIssue ;
-    rdfs:range github:GithubLabel .
+# Use platform:hasLabel instead of github:hasLabel for consistency
 
-github:milestone a rdf:Property ;
-    rdfs:label "Milestone"@en ;
-    rdfs:domain github:GithubIssue ;
-    rdfs:range github:GithubMilestone .
+# Use platform:hasMilestone instead of github:milestone for consistency
 
 github:hasReview a rdf:Property ;
     rdfs:label "Has Review"@en ;
@@ -553,67 +493,96 @@ github:partOfPullRequest a rdf:Property ;
     rdfs:domain git:GitCommit ;
     rdfs:range github:GithubPullRequest .
 
+github:mergedIntoIssue a rdf:Property ;
+    rdfs:label "Merged Into Issue"@en ;
+    rdfs:comment "Links a commit to the issue it was merged into"@en ;
+    rdfs:domain git:GitCommit ;
+    rdfs:range github:GithubIssue .
+
 #
 # ╭──────────────────────────────────────────────────╮
 # │ Status and State Enumeration Values              │
 # ╰──────────────────────────────────────────────────╯
 #
 
-# Workflow Status Values
-github:completed a rdfs:Resource ;
+# GitHub Workflow Status Class
+github:WorkflowStatus a rdfs:Class ;
+    rdfs:subClassOf platform:ExecutionStatus ;
+    rdfs:label "GitHub Workflow Status"@en ;
+    rdfs:comment "Status values specific to GitHub workflows"@en .
+
+# GitHub Workflow Status Values (subclass platform equivalents where possible)
+github:completed a github:WorkflowStatus, platform:ExecutionStatus ;
     rdfs:label "Completed"@en .
 
-github:in_progress a rdfs:Resource ;
+github:in_progress a github:WorkflowStatus, platform:ExecutionStatus ;
     rdfs:label "In Progress"@en .
 
-github:queued a rdfs:Resource ;
+github:queued a github:WorkflowStatus, platform:ExecutionStatus ;
     rdfs:label "Queued"@en .
 
-github:requested a rdfs:Resource ;
+github:requested a github:WorkflowStatus ;
     rdfs:label "Requested"@en .
 
-github:waiting a rdfs:Resource ;
+github:waiting a github:WorkflowStatus, platform:ExecutionStatus ;
     rdfs:label "Waiting"@en .
 
-# Workflow Conclusion Values
-github:success a rdfs:Resource ;
+# GitHub Workflow Conclusion Class
+github:WorkflowConclusion a rdfs:Class ;
+    rdfs:subClassOf platform:ExecutionConclusion ;
+    rdfs:label "GitHub Workflow Conclusion"@en ;
+    rdfs:comment "Conclusion values specific to GitHub workflows"@en .
+
+# GitHub Workflow Conclusion Values (reuse platform equivalents where possible)
+github:success a github:WorkflowConclusion, platform:ExecutionConclusion ;
+    owl:sameAs platform:success ;
     rdfs:label "Success"@en .
 
-github:failure a rdfs:Resource ;
+github:failure a github:WorkflowConclusion, platform:ExecutionConclusion ;
+    owl:sameAs platform:failure ;
     rdfs:label "Failure"@en .
 
-github:cancelled a rdfs:Resource ;
+github:cancelled a github:WorkflowConclusion, platform:ExecutionConclusion ;
+    owl:sameAs platform:cancelled ;
     rdfs:label "Cancelled"@en .
 
-github:skipped a rdfs:Resource ;
+github:skipped a github:WorkflowConclusion, platform:ExecutionConclusion ;
+    owl:sameAs platform:skipped ;
     rdfs:label "Skipped"@en .
 
-github:timed_out a rdfs:Resource ;
+github:timed_out a github:WorkflowConclusion, platform:ExecutionConclusion ;
+    owl:sameAs platform:timed_out ;
     rdfs:label "Timed Out"@en .
 
-github:action_required a rdfs:Resource ;
+github:action_required a github:WorkflowConclusion, platform:ExecutionConclusion ;
+    owl:sameAs platform:action_required ;
     rdfs:label "Action Required"@en .
 
-github:neutral a rdfs:Resource ;
+github:neutral a github:WorkflowConclusion ;
     rdfs:label "Neutral"@en .
 
-# Workflow Event Values
-github:PUSH a rdfs:Resource ;
+# GitHub Workflow Event Class
+github:WorkflowEvent a rdfs:Class ;
+    rdfs:label "GitHub Workflow Event"@en ;
+    rdfs:comment "Events that can trigger GitHub workflows"@en .
+
+# GitHub Workflow Event Values
+github:PUSH a github:WorkflowEvent ;
     rdfs:label "Push"@en .
 
-github:PULL_REQUEST a rdfs:Resource ;
+github:PULL_REQUEST a github:WorkflowEvent ;
     rdfs:label "Pull Request"@en .
 
-github:schedule a rdfs:Resource ;
+github:schedule a github:WorkflowEvent ;
     rdfs:label "Schedule"@en .
 
-github:workflow_dispatch a rdfs:Resource ;
+github:workflow_dispatch a github:WorkflowEvent ;
     rdfs:label "Workflow Dispatch"@en .
 
-github:repository_dispatch a rdfs:Resource ;
+github:repository_dispatch a github:WorkflowEvent ;
     rdfs:label "Repository Dispatch"@en .
 
-github:UNKNOWN a rdfs:Resource ;
+github:UNKNOWN a github:WorkflowEvent ;
     rdfs:label "Unknown"@en .
 
 # Review State Enumeration Values
