@@ -308,14 +308,6 @@ github:workflowRunId a rdf:Property ;
     rdfs:domain github:WorkflowRun ;
     rdfs:range xsd:long .
 
-# DEPRECATED: Redundant with workflowRunId (GitHub run numbers are typically sequential/derivable)
-# github:workflowRunNumber a rdf:Property ;
-#     owl:deprecated true ;
-#     rdfs:label "Workflow Run Number"@en ;
-#     rdfs:comment "DEPRECATED: Run number for the workflow (use workflowRunId instead - numbers are typically sequential and derivable)"@en ;
-#     rdfs:domain github:WorkflowRun ;
-#     rdfs:range xsd:long .
-
 github:workflowName a rdf:Property ;
     rdfs:label "Workflow Name"@en ;
     rdfs:comment "Name of the workflow"@en ;
@@ -374,12 +366,6 @@ github:workflowJobName a rdf:Property ;
     rdfs:domain github:WorkflowJob ;
     rdfs:range xsd:string .
 
-github:workflowJobUrl a rdf:Property ;
-    rdfs:label "Workflow Job URL"@en ;
-    rdfs:comment "URL of the workflow job"@en ;
-    rdfs:domain github:WorkflowJob ;
-    rdfs:range xsd:anyURI .
-
 github:stepName a rdf:Property ;
     rdfs:label "Step Name"@en ;
     rdfs:comment "Name of the workflow step"@en ;
@@ -431,12 +417,6 @@ github:stepUrl a rdf:Property ;
 # │ Relationships                                    │
 # ╰──────────────────────────────────────────────────╯
 #
-
-# Use platform:hasComment instead of github:comment for consistency
-
-# Use platform:hasLabel instead of github:hasLabel for consistency
-
-# Use platform:hasMilestone instead of github:milestone for consistency
 
 github:hasReview a rdf:Property ;
     rdfs:label "Has Review"@en ;

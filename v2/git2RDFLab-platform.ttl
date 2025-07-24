@@ -218,6 +218,11 @@ platform:url a rdf:Property ;
     rdfs:domain platform:Ticket ;
     rdfs:range xsd:anyURI .
 
+platform:apiUrl a rdf:Property ;
+    rdfs:label "API URL"@en ;
+    rdfs:comment "API endpoint URL for programmatic access to this resource and its related data"@en ;
+    rdfs:range xsd:anyURI .
+
 platform:locked a rdf:Property ;
     rdfs:label "Locked"@en ;
     rdfs:comment "Whether the ticket is locked from further discussion"@en ;
