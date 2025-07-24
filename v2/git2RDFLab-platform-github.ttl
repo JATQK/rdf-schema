@@ -418,6 +418,13 @@ github:stepUrl a rdf:Property ;
 # ╰──────────────────────────────────────────────────╯
 #
 
+github:hasComment a rdf:Property ;
+    rdfs:subPropertyOf platform:hasComment ;
+    rdfs:label "Has GitHub Comment"@en ;
+    rdfs:comment "This GitHub issue/PR has GitHub comments"@en ;
+    rdfs:domain github:GithubIssue ;
+    rdfs:range github:GithubComment .
+
 github:hasReview a rdf:Property ;
     rdfs:label "Has Review"@en ;
     rdfs:domain github:GithubPullRequest ;
