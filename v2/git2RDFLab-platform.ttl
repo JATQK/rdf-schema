@@ -549,7 +549,6 @@ platform:JobConclusion a rdfs:Class ;
     owl:equivalentClass platform:ExecutionConclusion ;
     rdfs:label "Job Conclusion"@en ;
     rdfs:comment "Possible conclusions for workflow jobs (alias for ExecutionConclusion)"@en .
-    rdfs:comment "Possible conclusions for workflow executions"@en .
 
 #
 # ╭──────────────────────────────────────────────────╮

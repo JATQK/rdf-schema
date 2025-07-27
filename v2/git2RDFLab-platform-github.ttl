@@ -265,6 +265,11 @@ github:submittedAt a rdf:Property ;
     rdfs:domain github:GithubReview ;
     rdfs:range xsd:dateTime .
 
+github:reviewOf a rdf:Property ;
+    rdfs:label "Review Of"@en ;
+    rdfs:comment "The issue or pull request that this review is for"@en ;
+    rdfs:domain github:GithubReview .
+
 #
 # ╭──────────────────────────────────────────────────╮
 # │ Reaction Properties                              │
