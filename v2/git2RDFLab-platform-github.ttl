@@ -288,8 +288,8 @@ github:reactionContent a rdf:Property ;
     rdfs:domain github:GithubReaction ;
     rdfs:range xsd:string .
 
-github:reactionUser a rdf:Property ;
-    rdfs:label "Reaction User"@en ;
+github:reactionBy a rdf:Property ;
+    rdfs:label "Reaction By"@en ;
     rdfs:comment "User who made the reaction"@en ;
     rdfs:domain github:GithubReaction ;
     rdfs:range github:GithubUser .
