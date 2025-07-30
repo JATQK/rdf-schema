@@ -147,6 +147,12 @@ analysis:wasGeneratedBy a rdf:Property ;
     rdfs:domain analysis:Result ;
     rdfs:range analysis:Execution .
 
+analysis:usedConfiguration a rdf:Property ;
+    rdfs:label "Used Configuration"@en ;
+    rdfs:comment "The specific configuration used to generate this result"@en ;
+    rdfs:domain analysis:Result ;
+    rdfs:range analysis:LLMConfiguration .
+
 #
 # ╭──────────────────────────────────────────────────╮
 # │ Metric Properties                                │
@@ -278,6 +284,12 @@ analysis:model a rdf:Property ;
     rdfs:comment "The model used by the automated agent"@en ;
     rdfs:domain analysis:AutomatedAgent ;
     rdfs:range xsd:string .
+
+analysis:belongsToAgent a rdf:Property ;
+    rdfs:label "Belongs To Agent"@en ;
+    rdfs:comment "The automated agent that this configuration belongs to"@en ;
+    rdfs:domain analysis:LLMConfiguration ;
+    rdfs:range analysis:AutomatedAgent .
 
 #
 # ╭──────────────────────────────────────────────────╮
