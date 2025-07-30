@@ -368,17 +368,6 @@ analysis:hasRatingResult a rdf:Property ;
     rdfs:comment "This resource has rating analysis results (qualitative assessments)"@en ;
     rdfs:range analysis:Result .
 
-analysis:hasWorkflowMetric a rdf:Property ;
-    rdfs:subPropertyOf analysis:hasResult ;
-    rdfs:label "Has Workflow Metric"@en ;
-    rdfs:comment "This workflow execution has associated metrics (failure rate, duration, etc.)"@en ;
-    rdfs:range analysis:Result .
-
-analysis:hasExecution a rdf:Property ;
-    rdfs:label "Has Execution"@en ;
-    rdfs:comment "This resource has analysis executions"@en ;
-    rdfs:range analysis:Execution .
-
 #
 # ╭──────────────────────────────────────────────────╮
 # │ Status Enumeration Values                        │
@@ -448,14 +437,6 @@ analysis:rating a analysis:MetricType ;
 analysis:measurement a analysis:MetricType ;
     rdfs:label "Measurement"@en ;
     rdfs:comment "Measurement metric type"@en .
-
-analysis:check a analysis:MetricType ;
-    rdfs:label "Check"@en ;
-    rdfs:comment "Check metric type"@en .
-
-analysis:audit a analysis:MetricType ;
-    rdfs:label "Audit"@en ;
-    rdfs:comment "Audit metric type"@en .
 
 #
 # ╭──────────────────────────────────────────────────╮
