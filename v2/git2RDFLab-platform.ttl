@@ -144,7 +144,7 @@ platform:assignee a rdf:Property ;
     rdfs:domain platform:Ticket ;
     rdfs:range platform:Person .
 
-# Generalized temporal properties (PROV-O inspired)
+# Generalized temporal properties
 platform:generatedAtTime a rdf:Property ;
     rdfs:label "Generated At Time"@en ;
     rdfs:comment "When the resource was created/generated"@en ;
@@ -169,14 +169,14 @@ platform:endedAtTime a rdf:Property ;
 platform:createdAt a rdf:Property ;
     owl:equivalentProperty platform:generatedAtTime ;
     rdfs:label "Created At"@en ;
-    rdfs:comment "When the ticket was created (alias for generatedAtTime)"@en ;
+    rdfs:comment "When the ticket was created"@en ;
     rdfs:domain platform:Ticket ;
     rdfs:range xsd:dateTime .
 
 platform:updatedAt a rdf:Property ;
     rdfs:subPropertyOf platform:generatedAtTime ;
     rdfs:label "Updated At"@en ;
-    rdfs:comment "When the ticket was last updated (represents the most recent generatedAtTime for modification events)"@en ;
+    rdfs:comment "When the ticket was last updated"@en ;
     rdfs:domain platform:Ticket ;
     rdfs:range xsd:dateTime .
 
