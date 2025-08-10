@@ -2,13 +2,17 @@
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
 @prefix git: <https://purl.archive.org/git2rdf/v2/git2RDFLab-git#> .
 
 # Ontology Declaration
 <https://purl.archive.org/git2rdf/v2/git2RDFLab-git#> a owl:Ontology ;
     owl:versionInfo "2.0" ;
+    owl:imports <http://www.w3.org/ns/prov#> ,
+                <http://xmlns.com/foaf/0.1/> ;
     rdfs:label "Git2RDF Git Ontology"@en ;
-    rdfs:comment "Core Git concepts including repositories, commits, branches, and version control operations"@en .
+    rdfs:comment "Core Git concepts including repositories, commits, branches, and version control operations with PROV-O integration"@en .
 
 #
 # ╭──────────────────────────────────────────────────╮
@@ -17,8 +21,9 @@
 #
 
 git:GitRepository a rdfs:Class ;
+    rdfs:subClassOf prov:Entity ;
     rdfs:label "Git Repository"@en ;
-    rdfs:comment "A Git repository containing branches, commits, and version history"@en .
+    rdfs:comment "A Git repository containing branches, commits, and version history - subclass of PROV-O Entity"@en .
 
 git:GitBranch a rdfs:Class ;
     owl:disjointWith git:GitCommit, git:GitTag ;
@@ -26,9 +31,10 @@ git:GitBranch a rdfs:Class ;
     rdfs:comment "A branch in a Git repository"@en .
 
 git:GitCommit a rdfs:Class ;
+    rdfs:subClassOf prov:Entity ;
     owl:disjointWith git:GitBranch, git:GitTag ;
     rdfs:label "Git Commit"@en ;
-    rdfs:comment "A commit in a Git repository"@en .
+    rdfs:comment "A commit in a Git repository - subclass of PROV-O Entity"@en .
 
 git:GitTag a rdfs:Class ;
     rdfs:label "Git Tag"@en ;
@@ -39,8 +45,9 @@ git:GitSubmodule a rdfs:Class ;
     rdfs:comment "A Git submodule reference"@en .
 
 git:Person a rdfs:Class ;
+    rdfs:subClassOf foaf:Person ;
     rdfs:label "Git Person"@en ;
-    rdfs:comment "A person in Git context (author, committer)"@en .
+    rdfs:comment "A person in Git context (author, committer) - subclass of FOAF Person"@en .
 
 git:CommitDiffEntry a rdfs:Class ;
     rdfs:label "Commit Diff Entry"@en ;
@@ -49,18 +56,6 @@ git:CommitDiffEntry a rdfs:Class ;
 git:CommitDiffEdit a rdfs:Class ;
     rdfs:label "Commit Diff Edit"@en ;
     rdfs:comment "A specific edit within a file change"@en .
-
-git:BranchSnapshot a rdfs:Class ;
-    rdfs:label "Branch Snapshot"@en ;
-    rdfs:comment "A snapshot of branch state at a specific time"@en .
-
-git:BranchSnapshotFileEntry a rdfs:Class ;
-    rdfs:label "Branch Snapshot File Entry"@en ;
-    rdfs:comment "A file entry in a branch snapshot"@en .
-
-git:BranchSnapshotLineEntry a rdfs:Class ;
-    rdfs:label "Branch Snapshot Line Entry"@en ;
-    rdfs:comment "A line entry in a snapshot file"@en .
 
 git:EditType a rdfs:Class ;
     rdfs:label "Edit Type"@en ;
@@ -88,11 +83,25 @@ git:hasBranch a rdf:Property ;
     rdfs:domain git:GitRepository ;
     rdfs:range git:GitBranch .
 
+git:branchOf a rdf:Property ;
+    owl:inverseOf git:hasBranch ;
+    rdfs:label "Branch Of"@en ;
+    rdfs:comment "This branch belongs to a repository"@en ;
+    rdfs:domain git:GitBranch ;
+    rdfs:range git:GitRepository .
+
 git:hasSubmodule a rdf:Property ;
     rdfs:label "Has Submodule"@en ;
     rdfs:comment "Repository contains this submodule"@en ;
     rdfs:domain git:GitRepository ;
     rdfs:range git:GitSubmodule .
+
+git:submoduleOf a rdf:Property ;
+    owl:inverseOf git:hasSubmodule ;
+    rdfs:label "Submodule Of"@en ;
+    rdfs:comment "This submodule belongs to a repository"@en ;
+    rdfs:domain git:GitSubmodule ;
+    rdfs:range git:GitRepository .
 
 git:hasCommit a rdf:Property ;
     rdfs:label "Has Commit"@en ;
@@ -149,14 +158,16 @@ git:authorEmail a rdf:Property ;
     rdfs:range xsd:string .
 
 git:authorDate a rdf:Property ;
+    rdfs:subPropertyOf prov:generatedAtTime ;
     rdfs:label "Author Date"@en ;
-    rdfs:comment "When the commit was authored"@en ;
+    rdfs:comment "When the commit was authored (subproperty of prov:generatedAtTime)"@en ;
     rdfs:domain git:GitCommit ;
     rdfs:range xsd:dateTime .
 
 git:commitDate a rdf:Property ;
+    rdfs:subPropertyOf prov:generatedAtTime ;
     rdfs:label "Commit Date"@en ;
-    rdfs:comment "When the commit was committed"@en ;
+    rdfs:comment "When the commit was committed (subproperty of prov:generatedAtTime)"@en ;
     rdfs:domain git:GitCommit ;
     rdfs:range xsd:dateTime .
 
@@ -173,8 +184,9 @@ git:committerEmail a rdf:Property ;
     rdfs:range xsd:string .
 
 git:hasParent a rdf:Property ;
+    owl:equivalentProperty prov:wasDerivedFrom ;
     rdfs:label "Has Parent"@en ;
-    rdfs:comment "This commit has a parent commit"@en ;
+    rdfs:comment "This commit has a parent commit (equivalent to PROV-O wasDerivedFrom)"@en ;
     rdfs:domain git:GitCommit ;
     rdfs:range git:GitCommit .
 
@@ -191,6 +203,13 @@ git:inBranch a rdf:Property ;
     rdfs:domain git:GitCommit ;
     rdfs:range git:GitBranch .
 
+git:branchContains a rdf:Property ;
+    owl:inverseOf git:inBranch ;
+    rdfs:label "Branch Contains"@en ;
+    rdfs:comment "This branch contains the specified commit"@en ;
+    rdfs:domain git:GitBranch ;
+    rdfs:range git:GitCommit .
+
 git:hasTag a rdf:Property ;
     rdfs:label "Has Tag"@en ;
     rdfs:comment "This commit has a tag"@en ;
@@ -203,6 +222,13 @@ git:tagOf a rdf:Property ;
     rdfs:comment "This tag belongs to a commit"@en ;
     rdfs:domain git:GitTag ;
     rdfs:range git:GitCommit .
+
+git:taggedBy a rdf:Property ;
+    owl:inverseOf git:pointsTo ;
+    rdfs:label "Tagged By"@en ;
+    rdfs:comment "This commit is tagged by a tag"@en ;
+    rdfs:domain git:GitCommit ;
+    rdfs:range git:GitTag .
 
 git:hasDiffEntry a rdf:Property ;
     rdfs:label "Has Diff Entry"@en ;
@@ -330,59 +356,6 @@ git:newLineEnd a rdf:Property ;
     rdfs:domain git:CommitDiffEdit ;
     rdfs:range xsd:integer .
 
-#
-# ╭──────────────────────────────────────────────────╮
-# │ Snapshot Properties                              │
-# ╰──────────────────────────────────────────────────╯
-#
-
-git:snapshotDate a rdf:Property ;
-    rdfs:label "Snapshot Date"@en ;
-    rdfs:comment "When this snapshot was taken"@en ;
-    rdfs:domain git:BranchSnapshot ;
-    rdfs:range xsd:dateTime .
-
-git:hasFileEntry a rdf:Property ;
-    rdfs:label "Has File Entry"@en ;
-    rdfs:comment "This snapshot contains file entries"@en ;
-    rdfs:domain git:BranchSnapshot ;
-    rdfs:range git:BranchSnapshotFileEntry .
-
-git:fileName a rdf:Property ;
-    rdfs:label "File Name"@en ;
-    rdfs:comment "The name of the file"@en ;
-    rdfs:domain git:BranchSnapshotFileEntry ;
-    rdfs:range xsd:string .
-
-git:hasLineEntry a rdf:Property ;
-    rdfs:label "Has Line Entry"@en ;
-    rdfs:comment "This file entry contains line entries"@en ;
-    rdfs:domain git:BranchSnapshotFileEntry ;
-    rdfs:range git:BranchSnapshotLineEntry .
-
-git:lineCommitHash a rdf:Property ;
-    rdfs:label "Line Commit Hash"@en ;
-    rdfs:comment "The commit hash for this line"@en ;
-    rdfs:domain git:BranchSnapshotLineEntry ;
-    rdfs:range xsd:string .
-
-git:lineNumber a rdf:Property ;
-    rdfs:label "Line Number"@en ;
-    rdfs:comment "The line number"@en ;
-    rdfs:domain git:BranchSnapshotLineEntry ;
-    rdfs:range xsd:nonNegativeInteger .
-
-git:lineBegin a rdf:Property ;
-    rdfs:label "Line Begin"@en ;
-    rdfs:comment "Beginning line number in snapshot"@en ;
-    rdfs:domain git:BranchSnapshotLineEntry ;
-    rdfs:range xsd:nonNegativeInteger .
-
-git:lineEnd a rdf:Property ;
-    rdfs:label "Line End"@en ;
-    rdfs:comment "Ending line number in snapshot"@en ;
-    rdfs:domain git:BranchSnapshotLineEntry ;
-    rdfs:range xsd:nonNegativeInteger .
 
 #
 # ╭──────────────────────────────────────────────────╮
