@@ -4,11 +4,23 @@
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix analysis: <https://purl.archive.org/git2rdf/v2/git2RDFLab-analysis#> .
 @prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
 
-# Ontology Declaration
-<https://purl.archive.org/git2rdf/v2/git2RDFLab-analysis-shapes#> a sh:NodeShape ;
+# -----------------------------------------------------------------
+# Metadata about this SHACL Shapes Graph
+# -----------------------------------------------------------------
+
+<https://purl.archive.org/git2rdf/v2/git2RDFLab-analysis-shapes>
+    a owl:Ontology ;
     rdfs:label "Git2RDF Analysis SHACL Shapes"@en ;
-    rdfs:comment "SHACL validation shapes for Analysis ontology"@en .
+    rdfs:comment "A collection of SHACL shapes for validating data conforming to the Git2RDF Analysis ontology (v2.0)."@en ;
+    
+    # --- Versioning Metadata ---
+    owl:versionInfo "2.0.0" ;
+    owl:versionIRI <https://purl.archive.org/git2rdf/v2/git2RDFLab-analysis-shapes> ;
+    dcterms:issued "2025-08-12"^^xsd:date ;
+    dcterms:modified "2025-08-12"^^xsd:date .
 
 #
 # ╭──────────────────────────────────────────────────╮
@@ -89,13 +101,6 @@ analysis:ResultShape a sh:NodeShape ;
         sh:maxCount 1 ;
         sh:minInclusive 0.0 ;
         sh:maxInclusive 1.0 ;
-    ] ;
-    
-    sh:property [
-        sh:path analysis:unit ;
-        sh:datatype xsd:string ;
-        sh:minCount 0 ;
-        sh:maxCount 1 ;
     ] ;
     
     sh:property [
@@ -180,13 +185,6 @@ analysis:MetricShape a sh:NodeShape ;
     ] ;
     
     sh:property [
-        sh:path analysis:instruction ;
-        sh:datatype xsd:string ;
-        sh:minCount 0 ;
-        sh:maxCount 1 ;
-    ] ;
-    
-    sh:property [
         sh:path analysis:description ;
         sh:datatype xsd:string ;
         sh:minCount 0 ;
@@ -209,34 +207,6 @@ analysis:MetricShape a sh:NodeShape ;
     
     sh:property [
         sh:path analysis:expectedScale ;
-        sh:datatype xsd:string ;
-        sh:minCount 0 ;
-        sh:maxCount 1 ;
-    ] ;
-    
-    sh:property [
-        sh:path analysis:usesField ;
-        sh:datatype xsd:string ;
-        sh:minCount 0 ;
-    ] ;
-    
-    sh:property [
-        sh:path analysis:promptLabel ;
-        sh:datatype xsd:string ;
-        sh:minCount 0 ;
-        sh:maxCount 1 ;
-    ] ;
-    
-    sh:property [
-        sh:path analysis:promptVersion ;
-        sh:datatype xsd:integer ;
-        sh:minCount 0 ;
-        sh:maxCount 1 ;
-        sh:minInclusive 1 ;
-    ] ;
-    
-    sh:property [
-        sh:path analysis:scale ;
         sh:datatype xsd:string ;
         sh:minCount 0 ;
         sh:maxCount 1 ;
@@ -276,13 +246,6 @@ analysis:ExecutionShape a sh:NodeShape ;
     ] ;
     
     sh:property [
-        sh:path analysis:purpose ;
-        sh:datatype xsd:string ;
-        sh:minCount 0 ;
-        sh:maxCount 1 ;
-    ] ;
-    
-    sh:property [
         sh:path analysis:scope ;
         sh:datatype xsd:string ;
         sh:minCount 0 ;
@@ -290,14 +253,7 @@ analysis:ExecutionShape a sh:NodeShape ;
     ] ;
     
     sh:property [
-        sh:path analysis:taskId ;
-        sh:datatype xsd:string ;
-        sh:minCount 0 ;
-        sh:maxCount 1 ;
-    ] ;
-    
-    sh:property [
-        sh:path analysis:experimentName ;
+        sh:path analysis:id ;
         sh:datatype xsd:string ;
         sh:minCount 0 ;
         sh:maxCount 1 ;
@@ -334,56 +290,6 @@ analysis:ExecutionShape a sh:NodeShape ;
 
 #
 # ╭──────────────────────────────────────────────────╮
-# │ Analysis Scale Shapes                           │
-# ╰──────────────────────────────────────────────────╯
-#
-
-analysis:ScaleShape a sh:NodeShape ;
-    sh:targetClass analysis:Scale ;
-    rdfs:label "Analysis Scale Shape"@en ;
-    
-    # Optional properties
-    sh:property [
-        sh:path analysis:scaleType ;
-        sh:class analysis:ScaleType ;
-        sh:minCount 0 ;
-        sh:maxCount 1 ;
-    ] ;
-    
-    sh:property [
-        sh:path analysis:minValue ;
-        sh:datatype xsd:decimal ;
-        sh:minCount 0 ;
-        sh:maxCount 1 ;
-    ] ;
-    
-    sh:property [
-        sh:path analysis:maxValue ;
-        sh:datatype xsd:decimal ;
-        sh:minCount 0 ;
-        sh:maxCount 1 ;
-    ] ;
-    
-    # Ensure minValue <= maxValue
-    sh:sparql [
-        sh:message "Scale minValue must be less than or equal to maxValue" ;
-        sh:prefixes [
-            sh:declare [
-                sh:prefix "analysis" ;
-                sh:namespace "https://purl.archive.org/git2rdf/v2/git2RDFLab-analysis#"^^xsd:anyURI ;
-            ] ;
-        ] ;
-        sh:select """
-            SELECT $this WHERE {
-                $this analysis:minValue ?min .
-                $this analysis:maxValue ?max .
-                FILTER (?min > ?max)
-            }
-        """ ;
-    ] .
-
-#
-# ╭──────────────────────────────────────────────────╮
 # │ Analysis Agent Shapes                           │
 # ╰──────────────────────────────────────────────────╯
 #
@@ -405,13 +311,6 @@ analysis:HumanAgentShape a sh:NodeShape ;
     rdfs:label "Analysis Human Agent Shape"@en ;
     
     # Optional properties
-    sh:property [
-        sh:path analysis:affiliation ;
-        sh:datatype xsd:string ;
-        sh:minCount 0 ;
-        sh:maxCount 1 ;
-    ] ;
-    
     sh:property [
         sh:path analysis:expertise ;
         sh:datatype xsd:string ;
@@ -450,13 +349,6 @@ analysis:LLMConfigurationShape a sh:NodeShape ;
     # Optional properties
     sh:property [
         sh:path analysis:modelName ;
-        sh:datatype xsd:string ;
-        sh:minCount 0 ;
-        sh:maxCount 1 ;
-    ] ;
-    
-    sh:property [
-        sh:path analysis:modelVersion ;
         sh:datatype xsd:string ;
         sh:minCount 0 ;
         sh:maxCount 1 ;
@@ -528,29 +420,6 @@ analysis:MetricTypeShape a sh:NodeShape ;
 # ╰──────────────────────────────────────────────────╯
 #
 
-# Ensure execution timestamp consistency
-analysis:ExecutionTimestampConsistencyShape a sh:NodeShape ;
-    sh:targetClass analysis:Result ;
-    rdfs:label "Execution Timestamp Consistency Shape"@en ;
-    
-    sh:sparql [
-        sh:message "Result execution timestamp should match its execution's timestamp" ;
-        sh:prefixes [
-            sh:declare [
-                sh:prefix "analysis" ;
-                sh:namespace "https://purl.archive.org/git2rdf/v2/git2RDFLab-analysis#"^^xsd:anyURI ;
-            ] ;
-        ] ;
-        sh:select """
-            SELECT $this WHERE {
-                $this analysis:executionTimestamp ?resultTime .
-                $this analysis:wasGeneratedBy ?execution .
-                ?execution analysis:executionTimestamp ?execTime .
-                FILTER (?resultTime != ?execTime)
-            }
-        """ ;
-    ] .
-
 # Ensure confidence values are reasonable
 analysis:ConfidenceRangeShape a sh:NodeShape ;
     sh:targetClass analysis:Result ;
@@ -603,6 +472,14 @@ analysis:PromptBuildShape a sh:NodeShape ;
         sh:path analysis:exampleCount ;
         sh:datatype xsd:integer ;
         sh:minInclusive 0 ;
+        sh:maxCount 1 ;
+    ] ;
+    
+    # Template is optional
+    sh:property [
+        sh:path analysis:template ;
+        sh:datatype xsd:string ;
+        sh:minCount 0 ;
         sh:maxCount 1 ;
     ] .
 
