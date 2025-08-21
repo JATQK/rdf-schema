@@ -40,10 +40,6 @@ git:GitTag a rdfs:Class ;
     rdfs:label "Git Tag"@en ;
     rdfs:comment "A tag pointing to a specific commit"@en .
 
-git:GitSubmodule a rdfs:Class ;
-    rdfs:label "Git Submodule"@en ;
-    rdfs:comment "A Git submodule reference"@en .
-
 git:Person a rdfs:Class ;
     rdfs:subClassOf foaf:Person ;
     rdfs:label "Git Person"@en ;
@@ -90,18 +86,6 @@ git:branchOf a rdf:Property ;
     rdfs:domain git:GitBranch ;
     rdfs:range git:GitRepository .
 
-git:hasSubmodule a rdf:Property ;
-    rdfs:label "Has Submodule"@en ;
-    rdfs:comment "Repository contains this submodule"@en ;
-    rdfs:domain git:GitRepository ;
-    rdfs:range git:GitSubmodule .
-
-git:submoduleOf a rdf:Property ;
-    owl:inverseOf git:hasSubmodule ;
-    rdfs:label "Submodule Of"@en ;
-    rdfs:comment "This submodule belongs to a repository"@en ;
-    rdfs:domain git:GitSubmodule ;
-    rdfs:range git:GitRepository .
 
 git:hasCommit a rdf:Property ;
     rdfs:label "Has Commit"@en ;
@@ -182,6 +166,12 @@ git:committerEmail a rdf:Property ;
     rdfs:comment "The email of the committer"@en ;
     rdfs:domain git:GitCommit ;
     rdfs:range xsd:string .
+
+git:committer a rdf:Property ;
+    rdfs:label "Committer"@en ;
+    rdfs:comment "The committer as a Person entity (optional, supplements committerName/committerEmail)"@en ;
+    rdfs:domain git:GitCommit ;
+    rdfs:range git:Person .
 
 git:hasParent a rdf:Property ;
     owl:equivalentProperty prov:wasDerivedFrom ;
@@ -266,35 +256,6 @@ git:pointsTo a rdf:Property ;
     rdfs:domain git:GitTag ;
     rdfs:range git:GitCommit .
 
-#
-# ╭──────────────────────────────────────────────────╮
-# │ Submodule Properties                             │
-# ╰──────────────────────────────────────────────────╯
-#
-
-git:submodulePath a rdf:Property ;
-    rdfs:label "Submodule Path"@en ;
-    rdfs:comment "The path of the submodule"@en ;
-    rdfs:domain git:GitSubmodule ;
-    rdfs:range xsd:string .
-
-git:submoduleHash a rdf:Property ;
-    rdfs:label "Submodule Hash"@en ;
-    rdfs:comment "The commit hash of the submodule"@en ;
-    rdfs:domain git:GitSubmodule ;
-    rdfs:range xsd:string .
-
-git:submoduleCommitUri a rdf:Property ;
-    rdfs:label "Submodule Commit URI"@en ;
-    rdfs:comment "URI of the submodule commit"@en ;
-    rdfs:domain git:GitSubmodule ;
-    rdfs:range xsd:anyURI .
-
-git:submoduleRepositoryUri a rdf:Property ;
-    rdfs:label "Submodule Repository URI"@en ;
-    rdfs:comment "URI of the submodule repository"@en ;
-    rdfs:domain git:GitSubmodule ;
-    rdfs:range xsd:anyURI .
 
 #
 # ╭──────────────────────────────────────────────────╮

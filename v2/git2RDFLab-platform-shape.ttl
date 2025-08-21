@@ -105,7 +105,6 @@ platform:PersonShape a sh:NodeShape ;
         sh:path platform:email ;
         sh:datatype xsd:string ;
         sh:minCount 0 ;
-        sh:maxCount 1 ;
         sh:pattern "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$" ;
         sh:flags "i" ;
     ] ;
@@ -621,6 +620,76 @@ platform:WorkflowExecutionShape a sh:NodeShape ;
         sh:minCount 0 ;
         sh:maxCount 1 ;
         sh:in ( "success" "failure" "cancelled" "skipped" "timed_out" "action_required" ) ;
+    ] ;
+    
+    # PROV-O temporal properties
+    sh:property [
+        sh:path prov:startedAtTime ;
+        sh:datatype xsd:dateTime ;
+        sh:minCount 0 ;
+        sh:maxCount 1 ;
+    ] ;
+    
+    sh:property [
+        sh:path prov:endedAtTime ;
+        sh:datatype xsd:dateTime ;
+        sh:minCount 0 ;
+        sh:maxCount 1 ;
+    ] ;
+    
+    sh:property [
+        sh:path platform:runAttempt ;
+        sh:datatype xsd:positiveInteger ;
+        sh:minCount 0 ;
+        sh:maxCount 1 ;
+    ] ;
+    
+    sh:property [
+        sh:path platform:runId ;
+        sh:datatype xsd:string ;
+        sh:minCount 0 ;
+        sh:maxCount 1 ;
+    ] .
+
+platform:WorkflowStepShape a sh:NodeShape ;
+    sh:targetClass platform:WorkflowStep ;
+    rdfs:label "Platform Workflow Step Shape"@en ;
+    
+    # Required properties
+    sh:property [
+        sh:path platform:name ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+    ] ;
+    
+    # Optional properties
+    sh:property [
+        sh:path platform:runAttempt ;
+        sh:datatype xsd:positiveInteger ;
+        sh:minCount 0 ;
+        sh:maxCount 1 ;
+    ] ;
+    
+    sh:property [
+        sh:path platform:jobUrl ;
+        sh:datatype xsd:anyURI ;
+        sh:minCount 0 ;
+        sh:maxCount 1 ;
+    ] ;
+    
+    sh:property [
+        sh:path platform:createdAt ;
+        sh:datatype xsd:dateTime ;
+        sh:minCount 0 ;
+        sh:maxCount 1 ;
+    ] ;
+    
+    sh:property [
+        sh:path platform:updatedAt ;
+        sh:datatype xsd:dateTime ;
+        sh:minCount 0 ;
+        sh:maxCount 1 ;
     ] ;
     
     # PROV-O temporal properties

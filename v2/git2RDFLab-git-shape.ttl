@@ -42,11 +42,6 @@ git:GitRepositoryShape a sh:NodeShape ;
         sh:minCount 0 ;
     ] ;
     
-    sh:property [
-        sh:path git:hasSubmodule ;
-        sh:class git:GitSubmodule ;
-        sh:minCount 0 ;
-    ] .
 
 #
 # ╭──────────────────────────────────────────────────╮
@@ -184,6 +179,16 @@ git:GitCommitShape a sh:NodeShape ;
         sh:path git:hasDiffEntry ;
         sh:class git:CommitDiffEntry ;
         sh:minCount 0 ;
+    ] ;
+    
+    sh:property [
+        sh:path git:committer ;
+        sh:or (
+            [ sh:class git:Person ]
+            [ sh:nodeKind sh:IRI ]
+        ) ;
+        sh:minCount 0 ;
+        sh:maxCount 1 ;
     ] .
 
 #
@@ -216,55 +221,6 @@ git:GitTagShape a sh:NodeShape ;
         sh:path git:tagMessage ;
         sh:datatype xsd:string ;
         sh:minCount 0 ;
-        sh:maxCount 1 ;
-    ] .
-
-#
-# ╭──────────────────────────────────────────────────╮
-# │ Git Submodule Shapes                            │
-# ╰──────────────────────────────────────────────────╯
-#
-
-git:GitSubmoduleShape a sh:NodeShape ;
-    sh:targetClass git:GitSubmodule ;
-    rdfs:label "Git Submodule Shape"@en ;
-    
-    # Required properties
-    sh:property [
-        sh:path git:submodulePath ;
-        sh:datatype xsd:string ;
-        sh:minCount 1 ;
-        sh:maxCount 1 ;
-    ] ;
-    
-    sh:property [
-        sh:path git:submoduleHash ;
-        sh:datatype xsd:string ;
-        sh:minCount 1 ;
-        sh:maxCount 1 ;
-        sh:pattern "^[a-f0-9]{40}$" ;
-    ] ;
-    
-    # Optional properties
-    sh:property [
-        sh:path git:submoduleCommitUri ;
-        sh:datatype xsd:anyURI ;
-        sh:minCount 0 ;
-        sh:maxCount 1 ;
-    ] ;
-    
-    sh:property [
-        sh:path git:submoduleRepositoryUri ;
-        sh:datatype xsd:anyURI ;
-        sh:minCount 0 ;
-        sh:maxCount 1 ;
-    ] ;
-    
-    # Repository relationship
-    sh:property [
-        sh:path git:submoduleOf ;
-        sh:class git:GitRepository ;
-        sh:minCount 1 ;
         sh:maxCount 1 ;
     ] .
 

@@ -7,67 +7,170 @@
 @prefix git: <https://purl.archive.org/git2rdf/v2/git2RDFLab-git#> .
 @prefix platform: <https://purl.archive.org/git2rdf/v2/git2RDFLab-platform#> .
 
-# Ontology Declaration
+#
+# ╭──────────────────────────────────────────────────╮
+# │ Metadata                                         │
+# ╰──────────────────────────────────────────────────╯
+#
+
 <https://purl.archive.org/git2rdf/v2/git2RDFLab-platform#> a owl:Ontology ;
-    owl:versionInfo "2.1" ;
+    owl:versionInfo "2.0" ;
     owl:imports <https://purl.archive.org/git2rdf/v2/git2RDFLab-git#> ,
                 <http://www.w3.org/ns/prov#> ,
                 <http://xmlns.com/foaf/0.1/> ;
     rdfs:label "Git2RDF Platform Ontology"@en ;
     rdfs:comment "Minimal platform concepts for Git hosting platforms"@en .
 
-# Essential Classes
+
+#
+# ╭──────────────────────────────────────────────────╮
+# │ Class: Repository                                │
+# ╰──────────────────────────────────────────────────╯
+#
+
 platform:Repository a rdfs:Class ;
     rdfs:subClassOf git:GitRepository, prov:Entity ;
     rdfs:label "Repository"@en .
+
+
+#
+# ╭──────────────────────────────────────────────────╮
+# │ Class: Ticket                                    │
+# ╰──────────────────────────────────────────────────╯
+#
 
 platform:Ticket a rdfs:Class ;
     rdfs:subClassOf prov:Entity ;
     rdfs:label "Ticket"@en ;
     rdfs:comment "Issues, pull requests, etc."@en .
 
+
+#
+# ╭──────────────────────────────────────────────────╮
+# │ Class: PullRequest                               │
+# ╰──────────────────────────────────────────────────╯
+#
+
 platform:PullRequest a rdfs:Class ;
     rdfs:subClassOf platform:Ticket ;
     rdfs:label "Pull Request"@en .
+
+
+#
+# ╭──────────────────────────────────────────────────╮
+# │ Class: Person                                    │
+# ╰──────────────────────────────────────────────────╯
+#
 
 platform:Person a rdfs:Class ;
     owl:equivalentClass git:Person ;
     rdfs:label "Person"@en .
 
+
+#
+# ╭──────────────────────────────────────────────────╮
+# │ Class: Comment                                   │
+# ╰──────────────────────────────────────────────────╯
+#
+
 platform:Comment a rdfs:Class ;
     rdfs:subClassOf prov:Entity ;
     rdfs:label "Comment"@en .
 
+
+#
+# ╭──────────────────────────────────────────────────╮
+# │ Class: Label                                     │
+# ╰──────────────────────────────────────────────────╯
+#
+
 platform:Label a rdfs:Class ;
     rdfs:label "Label"@en .
 
+
+#
+# ╭──────────────────────────────────────────────────╮
+# │ Class: Workflow                                  │
+# ╰──────────────────────────────────────────────────╯
+#
+
 platform:Workflow a rdfs:Class ;
     rdfs:label "Workflow"@en .
+
+
+#
+# ╭──────────────────────────────────────────────────╮
+# │ Class: WorkflowExecution                         │
+# ╰──────────────────────────────────────────────────╯
+#
 
 platform:WorkflowExecution a rdfs:Class ;
     rdfs:subClassOf prov:Activity ;
     rdfs:label "Workflow Execution"@en .
 
-# Analysis target classes
+
+#
+# ╭──────────────────────────────────────────────────╮
+# │ Class: WorkflowStep                              │
+# ╰──────────────────────────────────────────────────╯
+#
+
+platform:WorkflowStep a rdfs:Class ;
+    rdfs:subClassOf prov:Activity ;
+    rdfs:label "Workflow Step"@en ;
+    rdfs:comment "A single step within a workflow execution"@en .
+
+
+#
+# ╭──────────────────────────────────────────────────╮
+# │ Class: Analyzable                                │
+# ╰──────────────────────────────────────────────────╯
+#
+
 platform:Analyzable a rdfs:Class ;
     rdfs:label "Analyzable Resource"@en ;
     rdfs:comment "Resources that can have analysis results, ratings, metrics attached"@en ;
     owl:unionOf (platform:Repository platform:Ticket platform:PullRequest platform:Comment platform:Review platform:ReviewComment platform:Reaction platform:WorkflowExecution git:GitCommit) .
 
+
+#
+# ╭──────────────────────────────────────────────────╮
+# │ Class: Rating                                    │
+# ╰──────────────────────────────────────────────────╯
+#
+
 platform:Rating a rdfs:Class ;
     rdfs:label "Rating"@en ;
     rdfs:comment "A rating or score assigned to a resource"@en .
 
+
+#
+# ╭──────────────────────────────────────────────────╮
+# │ Class: Metrics                                   │
+# ╰──────────────────────────────────────────────────╯
+#
+
 platform:Metrics a rdfs:Class ;
     rdfs:label "Metrics"@en ;
     rdfs:comment "Statistical metrics about a resource"@en .
+
+
+#
+# ╭──────────────────────────────────────────────────╮
+# │ Class: Evaluation                                │
+# ╰──────────────────────────────────────────────────╯
+#
 
 platform:Evaluation a rdfs:Class ;
     rdfs:label "Evaluation"@en ;
     rdfs:comment "An evaluation or assessment of a resource"@en .
 
 
-# Universal identifiers and names
+#
+# ╭──────────────────────────────────────────────────╮
+# │ Universal Properties                             │
+# ╰──────────────────────────────────────────────────╯
+#
 platform:id a rdf:Property ;
     rdfs:label "ID"@en ;
     rdfs:comment "Platform-specific unique identifier. Format varies by platform (GitHub: integer, GitLab: integer, etc.)"@en ;
@@ -86,7 +189,7 @@ platform:name a rdf:Property ;
 
 platform:title a rdf:Property ;
     rdfs:label "Title"@en ;
-    rdfs:comment "Title of the resource (tickets, milestones). Should be concise and descriptive"@en ;
+    rdfs:comment "Title of the resource. Should be concise and descriptive"@en ;
     rdfs:range xsd:string .
 
 platform:description a rdf:Property ;
@@ -108,7 +211,13 @@ platform:url a rdf:Property ;
     rdfs:label "URL"@en ;
     rdfs:range xsd:anyURI .
 
-# Temporal properties
+
+#
+# ╭──────────────────────────────────────────────────╮
+# │ Temporal Properties                              │
+# ╰──────────────────────────────────────────────────╯
+#
+
 platform:createdAt a rdf:Property ;
     rdfs:subPropertyOf prov:generatedAtTime ;
     rdfs:label "Created At"@en ;
@@ -124,7 +233,13 @@ platform:closedAt a rdf:Property ;
     rdfs:label "Closed At"@en ;
     rdfs:range xsd:dateTime .
 
-# Person properties
+
+#
+# ╭──────────────────────────────────────────────────╮
+# │ Person Properties                                │
+# ╰──────────────────────────────────────────────────╯
+#
+
 platform:username a rdf:Property ;
     rdfs:label "Username"@en ;
     rdfs:comment "Platform username/login. Should be unique within the platform"@en ;
@@ -137,7 +252,13 @@ platform:email a rdf:Property ;
     rdfs:domain platform:Person ;
     rdfs:range xsd:string .
 
-# Ticket properties
+
+#
+# ╭──────────────────────────────────────────────────╮
+# │ Ticket Properties                                │
+# ╰──────────────────────────────────────────────────╯
+#
+
 platform:number a rdf:Property ;
     rdfs:label "Number"@en ;
     rdfs:domain platform:Ticket ;
@@ -178,7 +299,13 @@ platform:draft a rdf:Property ;
     rdfs:domain platform:Ticket ;
     rdfs:range xsd:boolean .
 
-# Pull Request properties
+
+#
+# ╭──────────────────────────────────────────────────╮
+# │ PullRequest Properties                           │
+# ╰──────────────────────────────────────────────────╯
+#
+
 platform:sourceBranch a rdf:Property ;
     rdfs:label "Source Branch"@en ;
     rdfs:domain platform:PullRequest ;
@@ -218,7 +345,13 @@ platform:mergeCommitSha a rdf:Property ;
     rdfs:domain platform:PullRequest ;
     rdfs:range xsd:string .
 
-# Repository properties
+
+#
+# ╭──────────────────────────────────────────────────╮
+# │ Repository Properties                            │
+# ╰──────────────────────────────────────────────────╯
+#
+
 platform:owner a rdf:Property ;
     rdfs:label "Owner"@en ;
     rdfs:domain platform:Repository ;
@@ -241,7 +374,13 @@ platform:defaultBranch a rdf:Property ;
     rdfs:domain platform:Repository ;
     rdfs:range git:GitBranch .
 
-# Comment properties
+
+#
+# ╭──────────────────────────────────────────────────╮
+# │ Comment Properties                               │
+# ╰──────────────────────────────────────────────────╯
+#
+
 platform:author a rdf:Property ;
     rdfs:subPropertyOf prov:wasAttributedTo ;
     rdfs:label "Author"@en ;
@@ -255,10 +394,16 @@ platform:authorOf a rdf:Property ;
     rdfs:domain platform:Person ;
     rdfs:range platform:Comment .
 
-# Workflow properties
+
+#
+# ╭──────────────────────────────────────────────────╮
+# │ Workflow Properties                              │
+# ╰──────────────────────────────────────────────────╯
+#
+
 platform:trigger a rdf:Property ;
     rdfs:label "Trigger"@en ;
-    rdfs:comment "Expected values: 'push', 'pull_request', 'schedule', 'manual', 'workflow_dispatch' (GitHub), 'merge_request' (GitLab)"@en ;
+    rdfs:comment "Expected values: 'push', 'pull_request', 'schedule', 'manual', 'workflow_dispatch', 'merge_request'"@en ;
     rdfs:domain platform:WorkflowExecution ;
     rdfs:range xsd:string .
 
@@ -274,7 +419,23 @@ platform:conclusion a rdf:Property ;
     rdfs:domain platform:WorkflowExecution ;
     rdfs:range xsd:string .
 
-# Hierarchical relationships with inverses for query efficiency
+platform:runAttempt a rdf:Property ;
+    rdfs:label "Run Attempt"@en ;
+    rdfs:comment "Attempt number for workflow execution or step"@en ;
+    rdfs:range xsd:positiveInteger .
+
+platform:jobUrl a rdf:Property ;
+    rdfs:label "Job URL"@en ;
+    rdfs:comment "URL to the specific job or step within the workflow execution"@en ;
+    rdfs:range xsd:anyURI .
+
+
+#
+# ╭──────────────────────────────────────────────────╮
+# │ Hierarchical Relationships                       │
+# ╰──────────────────────────────────────────────────╯
+#
+
 platform:hasLabel a rdf:Property ;
     rdfs:label "Has Label"@en ;
     rdfs:range platform:Label .
@@ -315,7 +476,13 @@ platform:executionOf a rdf:Property ;
     rdfs:domain platform:WorkflowExecution ;
     rdfs:range platform:Workflow .
 
-# Analysis and attachment properties
+
+#
+# ╭──────────────────────────────────────────────────╮
+# │ Analysis Properties                              │
+# ╰──────────────────────────────────────────────────╯
+#
+
 platform:hasAttachment a rdf:Property ;
     rdfs:label "Has Attachment"@en ;
     rdfs:comment "Generic property for connecting resources to external analysis/evaluation results"@en ;
@@ -411,7 +578,6 @@ platform:ReactionType a rdfs:Class ;
 # ╰──────────────────────────────────────────────────╯
 #
 
-# Core Review Properties
 platform:reviewer a rdf:Property ;
     rdfs:label "Reviewer"@en ;
     rdfs:comment "Person who is performing the review"@en ;
@@ -443,19 +609,6 @@ platform:reviewBody a rdf:Property ;
     rdfs:comment "Main text content of the review"@en ;
     rdfs:domain platform:Review ;
     rdfs:range xsd:string .
-
-platform:dismissedAt a rdf:Property ;
-    rdfs:subPropertyOf prov:invalidatedAtTime ;
-    rdfs:label "Dismissed At"@en ;
-    rdfs:comment "When the review was dismissed"@en ;
-    rdfs:domain platform:Review ;
-    rdfs:range xsd:dateTime .
-
-platform:dismissedBy a rdf:Property ;
-    rdfs:label "Dismissed By"@en ;
-    rdfs:comment "Person who dismissed the review"@en ;
-    rdfs:domain platform:Review ;
-    rdfs:range platform:Person .
 
 # Review Request Properties (on PullRequest)
 platform:requestedReviewer a rdf:Property ;
@@ -512,7 +665,6 @@ platform:hasReply a rdf:Property ;
 # ╰──────────────────────────────────────────────────╯
 #
 
-# Review State Instances
 platform:COMMENTED a platform:ReviewState ;
     rdfs:label "Commented"@en ;
     rdfs:comment "General feedback provided without explicit approval/rejection"@en .

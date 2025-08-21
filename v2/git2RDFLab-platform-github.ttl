@@ -6,49 +6,28 @@
 @prefix platform: <https://purl.archive.org/git2rdf/v2/git2RDFLab-platform#> .
 @prefix github: <https://purl.archive.org/git2rdf/v2/git2RDFLab-platform-github#> .
 
-# Ontology Declaration
+#
+# ╭──────────────────────────────────────────────────╮
+# │ Metadata                                         │
+# ╰──────────────────────────────────────────────────╯
+#
+
 <https://purl.archive.org/git2rdf/v2/git2RDFLab-platform-github#> a owl:Ontology ;
-    owl:versionInfo "2.1" ;
+    owl:versionInfo "2.0" ;
     owl:imports <https://purl.archive.org/git2rdf/v2/git2RDFLab-platform#> ,
                 <https://purl.archive.org/git2rdf/v2/git2RDFLab-git#> ;
     rdfs:label "Git2RDF GitHub Platform Ontology"@en ;
     rdfs:comment "GitHub-specific extensions"@en .
 
-# GitHub Classes
+#
+# ╭──────────────────────────────────────────────────╮
+# │ Class: User                                      │
+# ╰──────────────────────────────────────────────────╯
+#
+
 github:User a rdfs:Class ;
     rdfs:subClassOf platform:Person ;
     rdfs:label "GitHub User"@en .
-
-github:Repository a rdfs:Class ;
-    rdfs:subClassOf platform:Repository ;
-    rdfs:label "GitHub Repository"@en .
-
-github:Issue a rdfs:Class ;
-    rdfs:subClassOf platform:Ticket ;
-    rdfs:label "GitHub Issue"@en .
-
-github:PullRequest a rdfs:Class ;
-    rdfs:subClassOf platform:PullRequest ;
-    rdfs:label "GitHub Pull Request"@en .
-
-github:Comment a rdfs:Class ;
-    rdfs:subClassOf platform:Comment ;
-    rdfs:label "GitHub Comment"@en .
-
-github:Action a rdfs:Class ;
-    rdfs:subClassOf platform:Workflow ;
-    rdfs:label "GitHub Action"@en .
-
-github:WorkflowRun a rdfs:Class ;
-    rdfs:subClassOf platform:WorkflowExecution ;
-    rdfs:label "GitHub Workflow Run"@en .
-
-github:archived a rdf:Property ;
-    rdfs:label "Archived"@en ;
-    rdfs:domain github:Repository ;
-    rdfs:range xsd:boolean .
-
-# GitHub-specific User Properties
 
 github:nodeId a rdf:Property ;
     rdfs:label "Node ID"@en ;
@@ -57,43 +36,93 @@ github:nodeId a rdf:Property ;
     rdfs:range xsd:string .
 
 
-# GitHub-specific Workflow Properties
-github:runNumber a rdf:Property ;
-    rdfs:label "Run Number"@en ;
-    rdfs:domain github:WorkflowRun ;
-    rdfs:range xsd:positiveInteger .
+#
+# ╭──────────────────────────────────────────────────╮
+# │ Class: Repository                                │
+# ╰──────────────────────────────────────────────────╯
+#
 
-github:runAttempt a rdf:Property ;
-    rdfs:label "Run Attempt"@en ;
-    rdfs:domain github:WorkflowRun ;
-    rdfs:range xsd:positiveInteger .
+github:Repository a rdfs:Class ;
+    rdfs:subClassOf platform:Repository ;
+    rdfs:label "GitHub Repository"@en .
 
-# GitHub Review Classes
+github:archived a rdf:Property ;
+    rdfs:label "Archived"@en ;
+    rdfs:domain github:Repository ;
+    rdfs:range xsd:boolean .
+
+#
+# ╭──────────────────────────────────────────────────╮
+# │ Class: Issue                                     │
+# ╰──────────────────────────────────────────────────╯
+#
+
+github:Issue a rdfs:Class ;
+    rdfs:subClassOf platform:Ticket ;
+    rdfs:label "GitHub Issue"@en .
+
+
+#
+# ╭──────────────────────────────────────────────────╮
+# │ Class: PullRequest                               │
+# ╰──────────────────────────────────────────────────╯
+#
+
+github:PullRequest a rdfs:Class ;
+    rdfs:subClassOf platform:PullRequest ;
+    rdfs:label "GitHub Pull Request"@en .
+
+
+#
+# ╭──────────────────────────────────────────────────╮
+# │ Class: Comment                                   │
+# ╰──────────────────────────────────────────────────╯
+#
+
+github:Comment a rdfs:Class ;
+    rdfs:subClassOf platform:Comment ;
+    rdfs:label "GitHub Comment"@en .
+
+
+#
+# ╭──────────────────────────────────────────────────╮
+# │ Class: WorkflowRun                               │
+# ╰──────────────────────────────────────────────────╯
+#
+
+github:WorkflowRun a rdfs:Class ;
+    rdfs:subClassOf platform:WorkflowExecution ;
+    rdfs:label "GitHub Workflow Run"@en .
+
+
+#
+# ╭──────────────────────────────────────────────────╮
+# │ Class: Review                                    │
+# ╰──────────────────────────────────────────────────╯
+#
+
 github:Review a rdfs:Class ;
     rdfs:subClassOf platform:Review ;
     rdfs:label "GitHub Review"@en .
+
+
+#
+# ╭──────────────────────────────────────────────────╮
+# │ Class: ReviewComment                             │
+# ╰──────────────────────────────────────────────────╯
+#
 
 github:ReviewComment a rdfs:Class ;
     rdfs:subClassOf platform:ReviewComment ;
     rdfs:label "GitHub Review Comment"@en .
 
-# GitHub-specific PR Properties
-github:requestedReviewer a rdf:Property ;
-    owl:equivalentProperty platform:requestedReviewer ;
-    rdfs:label "Requested Reviewer"@en ;
-    rdfs:domain github:PullRequest ;
-    rdfs:range github:User .
 
-github:requestedReviewerOf a rdf:Property ;
-    rdfs:label "Requested Reviewer Of"@en ;
-    rdfs:comment "Find all pull requests where this user is a requested reviewer"@en ;
-    rdfs:domain github:User ;
-    rdfs:range github:PullRequest .
+#
+# ╭──────────────────────────────────────────────────╮
+# │ Class: WorkflowStep                              │
+# ╰──────────────────────────────────────────────────╯
+#
 
-# Property mappings for GitHub terminology
-github:baseBranch owl:equivalentProperty platform:targetBranch .
-github:headBranch owl:equivalentProperty platform:sourceBranch .
-github:merged owl:equivalentProperty platform:merged .
-github:mergedBy owl:equivalentProperty platform:mergedBy .
-github:mergedAt owl:equivalentProperty platform:mergedAt .
-github:draft owl:equivalentProperty platform:draft .
+github:WorkflowStep a rdfs:Class ;
+    rdfs:subClassOf platform:WorkflowStep ;
+    rdfs:label "GitHub Workflow Step"@en .

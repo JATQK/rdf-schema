@@ -21,7 +21,6 @@ github:UserShape a sh:NodeShape ;
     sh:targetClass github:User ;
     rdfs:label "GitHub User Shape"@en ;
     
-    # Use platform:username instead of github:login (they are equivalent)
     sh:property [
         sh:path platform:username ;
         sh:datatype xsd:string ;
@@ -39,14 +38,10 @@ github:UserShape a sh:NodeShape ;
         sh:pattern "^[A-Za-z0-9+/]*={0,2}$" ;
     ] ;
     
-    
-    # platform:username is now required above, so this duplicate constraint is removed
-    
     sh:property [
         sh:path platform:email ;
         sh:datatype xsd:string ;
         sh:minCount 0 ;
-        sh:maxCount 1 ;
     ] .
 
 #
@@ -242,23 +237,6 @@ github:PullRequestShape a sh:NodeShape ;
         sh:minCount 0 ;
         sh:maxCount 1 ;
         sh:pattern "^[a-f0-9]{40}$" ;
-    ] ;
-    
-    # Business rule: if merged=true, then mergedBy is required
-    sh:sparql [
-        sh:message "If pull request is merged, mergedBy must be specified" ;
-        sh:prefixes [
-            sh:declare [
-                sh:prefix "platform" ;
-                sh:namespace "https://purl.archive.org/git2rdf/v2/git2RDFLab-platform#"^^xsd:anyURI ;
-            ] ;
-        ] ;
-        sh:select """
-            SELECT $this WHERE {
-                $this platform:merged true .
-                FILTER NOT EXISTS { $this platform:mergedBy ?mergedBy }
-            }
-        """ ;
     ] .
 
 #
@@ -395,32 +373,6 @@ github:ReviewCommentShape a sh:NodeShape ;
 # ╰──────────────────────────────────────────────────╯
 #
 
-github:ActionShape a sh:NodeShape ;
-    sh:targetClass github:Action ;
-    rdfs:label "GitHub Action Shape"@en ;
-    
-    # Inherit all platform:Workflow constraints
-    sh:property [
-        sh:path platform:id ;
-        sh:datatype xsd:string ;
-        sh:minCount 1 ;
-        sh:maxCount 1 ;
-    ] ;
-    
-    sh:property [
-        sh:path platform:name ;
-        sh:datatype xsd:string ;
-        sh:minCount 1 ;
-        sh:maxCount 1 ;
-    ] ;
-    
-    sh:property [
-        sh:path platform:createdAt ;
-        sh:datatype xsd:dateTime ;
-        sh:minCount 0 ;
-        sh:maxCount 1 ;
-    ] .
-
 github:WorkflowRunShape a sh:NodeShape ;
     sh:targetClass github:WorkflowRun ;
     rdfs:label "GitHub Workflow Run Shape"@en ;
@@ -454,7 +406,6 @@ github:WorkflowRunShape a sh:NodeShape ;
     sh:property [
         sh:path platform:executionOf ;
         sh:or (
-            [ sh:class github:Action ]
             [ sh:class github:PullRequest ]
             [ sh:nodeKind sh:IRI ]
         ) ;
@@ -488,35 +439,53 @@ github:WorkflowRunShape a sh:NodeShape ;
 
 #
 # ╭──────────────────────────────────────────────────╮
-# │ Cross-Validation Rules                          │
+# │ GitHub Workflow Step Shapes                     │
 # ╰──────────────────────────────────────────────────╯
 #
 
-# Ensure GitHub-specific classes use GitHub users
-github:GitHubUserConsistencyShape a sh:NodeShape ;
-    sh:targetNode github:PullRequest, github:Issue, github:Comment, github:Review, github:ReviewComment ;
-    rdfs:label "GitHub User Consistency Shape"@en ;
+github:WorkflowStepShape a sh:NodeShape ;
+    sh:targetClass github:WorkflowStep ;
+    rdfs:label "GitHub Workflow Step Shape"@en ;
     
-    # All people referenced in GitHub entities should be GitHub users
-    sh:sparql [
-        sh:message "All persons in GitHub entities must be github:User instances" ;
-        sh:prefixes [
-            sh:declare [
-                sh:prefix "github" ;
-                sh:namespace "https://purl.archive.org/git2rdf/v2/git2RDFLab-platform-github#"^^xsd:anyURI ;
-            ] ;
-            sh:declare [
-                sh:prefix "platform" ;
-                sh:namespace "https://purl.archive.org/git2rdf/v2/git2RDFLab-platform#"^^xsd:anyURI ;
-            ] ;
-        ] ;
-        sh:select """
-            SELECT $this ?person WHERE {
-                $this ?personProperty ?person .
-                ?personProperty rdfs:range platform:Person .
-                FILTER NOT EXISTS { ?person rdf:type github:User }
-            }
-        """ ;
+    # Inherits all platform:WorkflowStep constraints
+    # GitHub-specific validation can be added here
+    
+    # Platform name property (required)
+    sh:property [
+        sh:path platform:name ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+    ] ;
+    
+    # Optional GitHub-specific properties
+    sh:property [
+        sh:path platform:runAttempt ;
+        sh:datatype xsd:positiveInteger ;
+        sh:minCount 0 ;
+        sh:maxCount 1 ;
+    ] ;
+    
+    sh:property [
+        sh:path platform:jobUrl ;
+        sh:datatype xsd:anyURI ;
+        sh:minCount 0 ;
+        sh:maxCount 1 ;
+        sh:pattern "^https://api\\.github\\.com/repos/[^/]+/[^/]+/actions/jobs/\\d+.*$" ;
+    ] ;
+    
+    # Temporal properties
+    sh:property [
+        sh:path platform:createdAt ;
+        sh:datatype xsd:dateTime ;
+        sh:minCount 0 ;
+        sh:maxCount 1 ;
+    ] ;
+    
+    sh:property [
+        sh:path platform:updatedAt ;
+        sh:datatype xsd:dateTime ;
+        sh:minCount 0 ;
+        sh:maxCount 1 ;
     ] .
 
-# GitHub login consistency rule removed since we only use platform:username now
